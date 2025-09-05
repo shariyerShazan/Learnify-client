@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Card,
@@ -9,12 +9,18 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 const Login = () => {
+    const [defaltLogin , setDefaultLogin] = useState("Login")
+    const [loginInput , setLoginInput] = useState({email: "" , password: ""})
+    const [registerInput , setRegisterInput] = useState({fullName :"", email: "" , password: ""})
+
   return (
-    <div className='flex justify-center items-center h-[70vh]'>
-          <div >
-            <Tabs defaultValue="Login" className="w-[400px]">
+    <div className='flex justify-center items-center mt-22'>
+            <Tabs defaultValue={`${defaltLogin}`} className="w-[400px]">
 
                 {/* tabs trigger here */}
             <TabsList className={"w-full"}>
@@ -26,15 +32,28 @@ const Login = () => {
             <TabsContent value="Login">
                        <Card>
                         <CardHeader>
-                            <CardTitle>Card Title</CardTitle>
-                            <CardDescription>Card Description</CardDescription>
-                            <CardAction>Card Action</CardAction>
+                            <CardTitle>Login to Learnify</CardTitle>
+                            <CardDescription>Login you password here...</CardDescription>
+                            <CardAction>
+                                       <Button >
+                                         Home
+                                        </Button>
+                            </CardAction>
                         </CardHeader>
-                        <CardContent>
-                            <p>Card Content</p>
+                        <CardContent className={"flex flex-col gap-3"}>
+                                   <div className='flex flex-col gap-2'>
+                                        <Label >Email: </Label>
+                                        <Input  />
+                                      </div>
+                                      <div className='flex flex-col gap-2'>
+                                        <Label >Password: </Label>
+                                        <Input  />
+                                      </div>
                         </CardContent>
                         <CardFooter>
-                            <p>Card Footer</p>
+                                     <Button >
+                                         Login
+                                        </Button>
                         </CardFooter>
                         </Card>
             </TabsContent>
@@ -43,20 +62,36 @@ const Login = () => {
             <TabsContent value="Register">
                                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Card Title</CardTitle>
-                                    <CardDescription>Card Description</CardDescription>
-                                    <CardAction>Card Action</CardAction>
+                                    <CardTitle>Register in Learnify</CardTitle>
+                                    <CardDescription>Create a new account here...</CardDescription>
+                                    <CardAction>
+                                        <Button >
+                                              Home
+                                        </Button>
+                                    </CardAction>
                                 </CardHeader>
-                                <CardContent>
-                                    <p>Card Content</p>
+                                <CardContent className={"flex flex-col gap-3"}>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label >Full Name: </Label>
+                                        <Input  />
+                                    </div>
+                                    <div className='flex flex-col gap-2'>
+                                        <Label >Email: </Label>
+                                        <Input  />
+                                      </div>
+                                      <div  className='flex flex-col gap-2'>
+                                        <Label >Password: </Label>
+                                        <Input  />
+                                      </div>
                                 </CardContent>
                                 <CardFooter>
-                                    <p>Card Footer</p>
+                                        <Button >
+                                         Register
+                                        </Button>
                                 </CardFooter>
                                 </Card>
             </TabsContent>
             </Tabs>
-       </div>
     </div>
   )
 }
