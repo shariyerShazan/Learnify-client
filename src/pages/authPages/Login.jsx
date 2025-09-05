@@ -18,9 +18,28 @@ const Login = () => {
     const [loginInput , setLoginInput] = useState({email: "" , password: ""})
     const [registerInput , setRegisterInput] = useState({fullName :"", email: "" , password: ""})
 
+
+    const changeInputHandler = (e , type)=>{
+        const {name , value} = e.target 
+        if(type === "Login"){
+            setLoginInput({...loginInput , [name]: value})
+        }
+        if(type === "Register"){
+            setRegisterInput({...registerInput , [name]: value})
+        }
+    }
+    const handleAction = (type)=>{
+       if(type === "Login"){
+        console.log(loginInput)
+       }
+       if(type === "Register"){
+        setDefaultLogin("Login")
+              console.log(registerInput)
+       }
+    }
   return (
     <div className='flex justify-center items-center mt-22'>
-            <Tabs defaultValue={`${defaltLogin}`} className="w-[400px]">
+            <Tabs defaultValue={`${defaltLogin}`} className={"w-[400px]"}>
 
                 {/* tabs trigger here */}
             <TabsList className={"w-full"}>
@@ -43,15 +62,15 @@ const Login = () => {
                         <CardContent className={"flex flex-col gap-3"}>
                                    <div className='flex flex-col gap-2'>
                                         <Label >Email: </Label>
-                                        <Input  />
+                                        <Input type={"email"} name={"email"} value={loginInput.email} onChange={(e)=>changeInputHandler(e , "Login")} placeholder={"E,g shariyer@gmail.com"} />
                                       </div>
                                       <div className='flex flex-col gap-2'>
                                         <Label >Password: </Label>
-                                        <Input  />
+                                        <Input type={"password"} name={"password"} value={loginInput.password} onChange={(e)=>changeInputHandler(e , "Login")} placeholder={"E,g  abc123"} />
                                       </div>
                         </CardContent>
                         <CardFooter>
-                                     <Button >
+                                     <Button className={"cursor-pointer"}  onClick={()=>handleAction("Login")}>
                                          Login
                                         </Button>
                         </CardFooter>
@@ -73,19 +92,19 @@ const Login = () => {
                                 <CardContent className={"flex flex-col gap-3"}>
                                     <div className='flex flex-col gap-2'>
                                         <Label >Full Name: </Label>
-                                        <Input  />
+                                        <Input type={"text"} name={"fullName"} value={registerInput.fullName} onChange={(e)=>changeInputHandler(e , "Register")} placeholder={"E,g  Shariyer Shazan"} />
                                     </div>
                                     <div className='flex flex-col gap-2'>
                                         <Label >Email: </Label>
-                                        <Input  />
+                                        <Input type={"email"} name={"email"} value={registerInput.email} onChange={(e)=>changeInputHandler(e , "Register")} placeholder={"E,g shariyer@gmail.com"} />
                                       </div>
                                       <div  className='flex flex-col gap-2'>
                                         <Label >Password: </Label>
-                                        <Input  />
+                                        <Input type={"password"} name={"password"} value={registerInput.password} onChange={(e)=>changeInputHandler(e , "Register")} placeholder={"E,g  abc123"} />
                                       </div>
                                 </CardContent>
                                 <CardFooter>
-                                        <Button >
+                                        <Button className={"cursor-pointer"} onClick={()=>handleAction("Register")}>
                                          Register
                                         </Button>
                                 </CardFooter>
