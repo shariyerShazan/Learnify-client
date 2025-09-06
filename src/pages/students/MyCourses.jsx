@@ -1,6 +1,4 @@
 import CourseCard from '@/components/shared/CourseCard'
-import CourseSkeleton from '@/components/skeletons/CourseSkeleton'
-import { Card } from '@/components/ui/card'
 import React, { useEffect, useState } from 'react'
 
 const MyCourses = () => {
@@ -22,13 +20,7 @@ const MyCourses = () => {
          <div className='flex flex-wrap gap-4 mt-6'>
          {
         (loading ? Array(2).fill(0) : [0,1]).map((_, index) => (
-          <Card className="w-72 pt-0 pb-1" key={index}>
-            {loading ? (
-              <CourseSkeleton />
-            ) : (
-               <CourseCard />
-            )}
-          </Card>
+          <CourseCard  loading={loading} index={index}/>
         ))
       }
          </div>

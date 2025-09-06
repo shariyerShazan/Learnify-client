@@ -4,7 +4,7 @@ import React from 'react'
 
 const CourseSkeleton = () => {
   return (
-    <div className='flex flex-col gap-2  animate-pulse'>
+    <div className='flex flex-col gap-2 pb-2  animate-pulse'>
       {/* Image */}
       <Skeleton className='h-40 w-full rounded-t-lg rounded-b-none bg-gray-300 relative overflow-hidden'>
         <div className='absolute inset-0 bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 animate-shimmer'></div>

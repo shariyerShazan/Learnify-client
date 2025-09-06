@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "@/pages/authPages/Login";
 import MyCourses from "@/pages/students/MyCourses";
 import About from "@/pages/About";
+import Profile from "@/pages/Profile";
 
 export const Router = createBrowserRouter([
     {
@@ -23,6 +24,11 @@ export const Router = createBrowserRouter([
             {
                 path: "my-courses" ,
                 element: <MyCourses/>
+            }
+            ,
+            {
+                path: "profile" ,
+                element: <Profile/>
             }
         ] ,
     } ,

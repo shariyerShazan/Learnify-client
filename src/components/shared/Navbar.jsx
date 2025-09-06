@@ -82,7 +82,7 @@ const Navbar = () => {
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className={"cursor-pointer"}> 
+              <DropdownMenuItem onClick={()=>navigate("/profile")} className={"cursor-pointer"}> 
                 <User className="mr-2 h-4 w-4" /> My Profile
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
