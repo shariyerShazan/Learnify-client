@@ -101,7 +101,7 @@ const Login = () => {
                         </CardContent>
                         <CardFooter>
                                     {
-                                      btnLoading? <Button >
+                                      btnLoading? <Button disabled={btnLoading}>
                                           <Loader2 className=' animate-spin' />Please wait...
                                       </Button>: 
                                        <Button className={"cursor-pointer"}  onClick={()=>handleAction("Login")}>
@@ -140,7 +140,7 @@ const Login = () => {
                                 </CardContent>
                                 <CardFooter>
                                {
-                                       btnLoading? <Button >
+                                       btnLoading? <Button disabled={btnLoading}>
                                           <Loader2 className=' animate-spin' />Please wait...
                                       </Button>: 
                                         <Button className={"cursor-pointer"} onClick={()=>handleAction("Register")}>
