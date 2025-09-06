@@ -12,6 +12,9 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import axios from 'axios'
+import { USER_API_END_POINT } from '@/utils/apiEndPoint'
+import { toast } from 'react-toastify'
 
 const Login = () => {
     const [defaltLogin , setDefaultLogin] = useState("Login")
@@ -28,13 +31,28 @@ const Login = () => {
             setRegisterInput({...registerInput , [name]: value})
         }
     }
-    const handleAction = (type)=>{
+    const handleAction = async  (type)=>{
        if(type === "Login"){
-        console.log(loginInput)
+          try {
+            const res = await axios.post(`${USER_API_END_POINT}/login` , {loginInput} , {withCredentials: true})
+            if(res.data.success){
+              toast.success(res.data.message)
+            }
+          } catch (error) {
+            console.log(error)
+            toast.error(error.response.data.message)
+          }
        }
        if(type === "Register"){
-        setDefaultLogin("Login")
-              console.log(registerInput)
+        try {
+          const res = await axios.post(`${USER_API_END_POINT}/register` , {registerInput} , {withCredentials: true})
+          if(res.data.success){
+            toast.success(res.data.message)
+          }
+        } catch (error) {
+          console.log(error)
+          toast.error(error.response.data.message)
+        }
        }
     }
   return (
