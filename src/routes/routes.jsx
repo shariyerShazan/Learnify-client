@@ -3,6 +3,8 @@ import MainLayout from "../layouts/MainLayout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Login from "@/pages/authPages/Login";
+import MyCourses from "@/pages/students/MyCourses";
+import About from "@/pages/About";
 
 export const Router = createBrowserRouter([
     {
@@ -14,6 +16,14 @@ export const Router = createBrowserRouter([
                 index: true ,
                 element: <Home />
             } ,
+            {
+                 path: "about" ,
+                 element: <About />
+            },
+            {
+                path: "my-courses" ,
+                element: <MyCourses/>
+            }
         ] ,
     } ,
     {

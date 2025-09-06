@@ -1,4 +1,4 @@
-import Courses from '@/components/shared/Courses'
+import Courses from '@/pages/Courses'
 import React from 'react'
 
 const Home = () => {

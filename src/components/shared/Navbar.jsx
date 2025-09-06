@@ -19,8 +19,11 @@ import {
   LayoutDashboard,
   LogOut
 } from "lucide-react"
+import { NavLink, useNavigate } from "react-router"
+import { Button } from "../ui/button"
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
 
@@ -47,9 +50,28 @@ const Navbar = () => {
         <h2 className="text-2xl font-bold">
           Learni<span className="text-pink-500">fy</span>
         </h2>
-
+         {
+          !user && <div className="flex gap-6 items-center">
+          <NavLink  to={"/"} className={({ isActive }) => `hover:scale-102 cursor-pointer ${isActive ? "border-b-2 border-gray-950" : ""}`  }  >
+                Home
+              </NavLink>
+              <NavLink  to={"/about"} className={({ isActive }) => `hover:scale-102 cursor-pointer ${isActive ? "border-b-2 border-gray-950" : ""}`  }  >
+                About
+              </NavLink>
+          <Button onClick={()=>navigate("/login")} className={"cursor-pointer"}  >
+          Login
+         </Button>
+         </div>
+         }
         {user && (
-          <DropdownMenu>
+          <div className="flex gap-6 items-center">
+            <NavLink  to={"/"} className={({ isActive }) => `hover:scale-102 cursor-pointer ${isActive ? "border-b-2 border-gray-950" : ""}`  }  >
+                Home
+              </NavLink>
+              <NavLink  to={"/about"} className={({ isActive }) => `hover:scale-102 cursor-pointer ${isActive ? "border-b-2 border-gray-950" : ""}`  }  >
+                About
+              </NavLink>
+              <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <img
                 src={user?.profilePicture || "/default-avatar.png"}
@@ -63,8 +85,8 @@ const Navbar = () => {
               <DropdownMenuItem className={"cursor-pointer"}> 
                 <User className="mr-2 h-4 w-4" /> My Profile
               </DropdownMenuItem>
-              <DropdownMenuItem className={"cursor-pointer"}>
-                <BookOpen className="mr-2 h-4 w-4" /> My Courses
+              <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
+                <BookOpen  className="mr-2 h-4 w-4" /> My Courses
               </DropdownMenuItem>
               <DropdownMenuItem className={"cursor-pointer"}>
                 <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
@@ -78,6 +100,7 @@ const Navbar = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         )}
       </div>
     </div>
