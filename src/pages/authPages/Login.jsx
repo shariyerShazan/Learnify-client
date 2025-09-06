@@ -24,7 +24,7 @@ import { useDispatch } from 'react-redux'
 const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-    const [defaltLogin , setDefaultLogin] = useState("Register")
+    const [defaltLogin , setDefaultLogin] = useState("Login")
     const [btnLoading , setBtnLoading] = useState(false)
     const [loginInput , setLoginInput] = useState({email: "" , password: ""})
     const [registerInput , setRegisterInput] = useState({fullName :"", email: "" , password: ""})
