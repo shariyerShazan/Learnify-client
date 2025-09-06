@@ -1,9 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Home = () => {
+  const {user} = useSelector((state)=>state.user)
   return (
     <div>
-      home
+      {console.log(user)}
+      {user.fullName}
     </div>
   )
 }

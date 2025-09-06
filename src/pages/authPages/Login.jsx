@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Card,
@@ -17,10 +17,13 @@ import { USER_API_END_POINT } from '@/utils/apiEndPoint'
 import { toast } from 'react-toastify'
 import { Loader2 } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { setUser } from '@/reduxStore/userSlice'
+import { useDispatch } from 'react-redux'
 
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
     const [defaltLogin , setDefaultLogin] = useState("Register")
     const [btnLoading , setBtnLoading] = useState(false)
     const [loginInput , setLoginInput] = useState({email: "" , password: ""})
@@ -44,7 +47,8 @@ const Login = () => {
             if(res.data.success){
               toast.success(res.data.message)
               setBtnLoading(false)
-              navigate("/")
+              navigate("/") 
+              dispatch(setUser(res.data.user))
             }
           } catch (error) {
             console.log(error)
@@ -69,7 +73,7 @@ const Login = () => {
     }
   return (
     <div className='flex justify-center items-center mt-22'>
-            <Tabs value={defaltLogin} className={"w-[400px]"}>
+            <Tabs value={defaltLogin}  onValueChange={(val) => setDefaultLogin(val)}  className={"w-[400px]"}>
 
                 {/* tabs trigger here */}
             <TabsList className={"w-full"}>
