@@ -36,6 +36,7 @@ const Navbar = () => {
       )
       if (res.data.success) {
         toast.success(res.data.message)
+        navigate("/login")
         dispatch(setUser(null))
       }
     } catch (error) {
@@ -74,9 +75,9 @@ const Navbar = () => {
               <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <img
-                src={user?.profilePicture || "/default-avatar.png"}
+                src={user?.profilePicture}
                 alt="profile"
-                className="w-10 h-10 rounded-full cursor-pointer border"
+                className="w-10 h-10 rounded-full cursor-pointer border object-cover"
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
