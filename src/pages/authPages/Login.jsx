@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Card,
@@ -15,9 +15,14 @@ import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { USER_API_END_POINT } from '@/utils/apiEndPoint'
 import { toast } from 'react-toastify'
+import { Loader2 } from 'lucide-react'
+import { useNavigate } from 'react-router'
+
 
 const Login = () => {
-    const [defaltLogin , setDefaultLogin] = useState("Login")
+  const navigate = useNavigate()
+    const [defaltLogin , setDefaultLogin] = useState("Register")
+    const [btnLoading , setBtnLoading] = useState(false)
     const [loginInput , setLoginInput] = useState({email: "" , password: ""})
     const [registerInput , setRegisterInput] = useState({fullName :"", email: "" , password: ""})
 
@@ -32,32 +37,39 @@ const Login = () => {
         }
     }
     const handleAction = async  (type)=>{
+      setBtnLoading(true)
        if(type === "Login"){
           try {
-            const res = await axios.post(`${USER_API_END_POINT}/login` , {loginInput} , {withCredentials: true})
+            const res = await axios.post(`${USER_API_END_POINT}/login` , loginInput , {withCredentials: true})
             if(res.data.success){
               toast.success(res.data.message)
+              setBtnLoading(false)
+              navigate("/")
             }
           } catch (error) {
             console.log(error)
             toast.error(error.response.data.message)
+            setBtnLoading(false)
           }
        }
        if(type === "Register"){
         try {
-          const res = await axios.post(`${USER_API_END_POINT}/register` , {registerInput} , {withCredentials: true})
+          const res = await axios.post(`${USER_API_END_POINT}/register` , registerInput , {withCredentials: true})
           if(res.data.success){
             toast.success(res.data.message)
+            setDefaultLogin("Login") 
+            setBtnLoading(false)
           }
         } catch (error) {
           console.log(error)
           toast.error(error.response.data.message)
+          setBtnLoading(false)
         }
        }
     }
   return (
     <div className='flex justify-center items-center mt-22'>
-            <Tabs defaultValue={`${defaltLogin}`} className={"w-[400px]"}>
+            <Tabs value={defaltLogin} className={"w-[400px]"}>
 
                 {/* tabs trigger here */}
             <TabsList className={"w-full"}>
@@ -72,7 +84,7 @@ const Login = () => {
                             <CardTitle>Login to Learnify</CardTitle>
                             <CardDescription>Login you password here...</CardDescription>
                             <CardAction>
-                                       <Button >
+                                       <Button className={"cursor-pointer"} onClick={()=> navigate('/')}>
                                          Home
                                         </Button>
                             </CardAction>
@@ -88,9 +100,14 @@ const Login = () => {
                                       </div>
                         </CardContent>
                         <CardFooter>
-                                     <Button className={"cursor-pointer"}  onClick={()=>handleAction("Login")}>
-                                         Login
-                                        </Button>
+                                    {
+                                      btnLoading? <Button >
+                                          <Loader2 className=' animate-spin' />Please wait...
+                                      </Button>: 
+                                       <Button className={"cursor-pointer"}  onClick={()=>handleAction("Login")}>
+                                       Login
+                                      </Button>
+                                    }
                         </CardFooter>
                         </Card>
             </TabsContent>
@@ -102,7 +119,7 @@ const Login = () => {
                                     <CardTitle>Register in Learnify</CardTitle>
                                     <CardDescription>Create a new account here...</CardDescription>
                                     <CardAction>
-                                        <Button >
+                                        <Button className={"cursor-pointer"} onClick={()=> navigate('/')}>
                                               Home
                                         </Button>
                                     </CardAction>
@@ -122,9 +139,14 @@ const Login = () => {
                                       </div>
                                 </CardContent>
                                 <CardFooter>
+                               {
+                                       btnLoading? <Button >
+                                          <Loader2 className=' animate-spin' />Please wait...
+                                      </Button>: 
                                         <Button className={"cursor-pointer"} onClick={()=>handleAction("Register")}>
                                          Register
                                         </Button>
+                                }
                                 </CardFooter>
                                 </Card>
             </TabsContent>
