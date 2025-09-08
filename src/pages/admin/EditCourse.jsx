@@ -6,9 +6,12 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@radix-ui/react-dropdown-menu"
-import { Plus } from "lucide-react"
+import { Loader2, Plus } from "lucide-react"
+import { useNavigate } from "react-router";
 
 const EditCourse = () => {
+    const navigate = useNavigate()
+    const [btnLoading , setBtnLoading] = useState(false)
   const [input, setInput] = useState({
     courseTitle: "",
     subtitle: "",
@@ -19,6 +22,7 @@ const EditCourse = () => {
     courseThumbnail: ""
   });
 
+  const [previewThm , setPreviewThm] = useState(input.courseThumbnail)
   const avatarInputRef = useRef(null);
 
   const changeEventHandler = (e) => {
@@ -39,15 +43,16 @@ const EditCourse = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setInput({ ...input, courseThumbnail: reader.result });
+        setPreviewThm( reader.result );
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSave = () => {
+    setBtnLoading(true)
     console.log("Save course data: ", input);
-    // এখানে axios/post request করতে পারো
+// 
   };
 
   const isPublished = true;
@@ -56,7 +61,7 @@ const EditCourse = () => {
     <div className="space-y-6">
       <div className='flex justify-between my-4'>
         <h4 className='text-2xl font-bold'>Add details information regarding course</h4>
-        <Button>
+        <Button className={"cursor-pointer"}>
           Go to Lectures page
         </Button>
       </div>
@@ -68,10 +73,10 @@ const EditCourse = () => {
             <p className='text-sm font-semibold'>Make changes to your course here and click save when you are done.</p>
           </div>
           <div className='flex gap-3'>
-            <Button variant="secondary">
+            <Button className={"cursor-pointer hover:scale-101"} variant="secondary">
               {isPublished ? "UnPublished" : "Published"}
             </Button>
-            <Button>
+            <Button className={"cursor-pointer hover:scale-101"}>
               Remove Course
             </Button>
           </div>
@@ -168,11 +173,8 @@ const EditCourse = () => {
               className="relative w-96 h-42 mt-1 rounded-md cursor-pointer border flex items-center justify-center overflow-hidden bg-gray-100 group"
             >
               <Avatar className="w-full h-full rounded-md group-hover:opacity-50">
-                {input.courseThumbnail ? (
-                  <AvatarImage src={input.courseThumbnail} alt="Thumbnail" className="object-cover w-full h-full" />
-                ) : (
+                  <AvatarImage src={  previewThm || input.courseThumbnail } alt="Thumbnail" className="object-cover w-full h-full" />
                   <AvatarFallback className="text-gray-500"></AvatarFallback>
-                )}
               </Avatar>
               <Plus size={24} className="absolute text-gray-600 hidden group-hover:block " />
             </div>
@@ -184,8 +186,15 @@ const EditCourse = () => {
             />
           </div>
 
-          <div className="flex justify-end mt-4">
-            <Button onClick={handleSave}>Save</Button>
+          <div className="flex justify-end gap-4 mt-4">
+            <Button variant={"secondary"} className={"hover:scale-101 cursor-pointer"} onClick={()=>navigate("/dashboard/courses")} >
+                Cancel
+            </Button>
+            {btnLoading ?  
+            <Button disabled={true}><Loader2 className="animate-spin cursor-pointer"/>Please wait...</Button> :
+             <Button className={"cursor-pointer hover:scale-101"} onClick={handleSave}>Save</Button>
+              }
+           
           </div>
         </CardContent>
       </Card>
