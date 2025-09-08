@@ -1,4 +1,4 @@
-import DaSidebar from "@/components/shared/DaSidebar";
+import DaSidebar from "@/components/shared/admin/DaSidebar";
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 
@@ -10,9 +10,9 @@ useEffect(()=>{
     navigate("/dashboard/preview")
 } ,[])
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen gap-4">
       <DaSidebar />
-      <div className="flex-1 p-4 md:ml-64">
+      <div className="flex-1 p-4 ">
         <Outlet />
       </div>
     </div>
