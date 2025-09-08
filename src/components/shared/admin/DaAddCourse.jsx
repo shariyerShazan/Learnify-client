@@ -37,6 +37,7 @@ const DaAddCourse = ({ open, setOpen  , refetchCourses}) => {
       if (res.data.success) {
         toast.success(res.data.message);
         setOpen(false);
+        // setFormData(null)
         setBtnLoading(false)
         refetchCourses()
       }

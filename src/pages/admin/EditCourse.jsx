@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import TextEditor from '@/components/shared/admin/TextEditor'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { Button } from "@/components/ui/button"
@@ -7,10 +7,23 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@radix-ui/react-dropdown-menu"
 import { Loader2, Plus } from "lucide-react"
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import EditCourseSkeleton from "@/components/skeletons/EditCourseSkeleton";
+import { useSelector } from "react-redux";
+import { useGetSingleCourse } from "@/hooks/useGetSingleCourse";
+import { toast } from "react-toastify";
+import { COURSE_API_END_POINT } from "@/utils/apiEndPoint";
+import axios from "axios";
 
 const EditCourse = () => {
+    const {courseId} = useParams()
+    const {refetchSingleCourse} = useGetSingleCourse(courseId)
+    useEffect(()=>{
+        refetchSingleCourse()
+    }, [])
+    const {singleCourse} = useSelector((state) => state.course)
+
+    // console.log(singleCourse)
   const [loading , setLoading] = useState(true)
 
     setTimeout(() => {
@@ -28,6 +41,23 @@ const EditCourse = () => {
     coursePrice: "",
     courseThumbnail: ""
   });
+
+  useEffect(() => {
+    if(singleCourse){
+   
+        setInput({
+            courseTitle: singleCourse.courseTitle || "",
+            subtitle: singleCourse.subtitle || "",
+            description: singleCourse.description || "",
+            category: singleCourse.category || "",
+            courseLevel: singleCourse.courseLevel || "",
+            coursePrice: singleCourse.coursePrice || "",
+            courseThumbnail: singleCourse.courseThumbnail || ""
+        })
+        setPreviewThm(singleCourse.courseThumbnail || "")
+    }
+}, [singleCourse])
+
 
   const [previewThm , setPreviewThm] = useState(input.courseThumbnail)
   const avatarInputRef = useRef(null);
@@ -56,10 +86,33 @@ const EditCourse = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const formData = new FormData()
+    formData.append("courseTitle" , input.courseTitle)
+    formData.append("subtitle" , input.subtitle)
+    formData.append("category" , input.category)
+    formData.append("description" , input.description)
+    formData.append("courseLevel" , input.courseLevel)
+    formData.append("coursePrice" , input.coursePrice)
+   
+    if(avatarInputRef.current.files[0]){
+        formData.append("courseThumbnail" , avatarInputRef.current.files[0])
+    }
     setBtnLoading(true)
-    console.log("Save course data: ", input);
-// 
+       
+    try {
+        const res = await axios.patch(`${COURSE_API_END_POINT}/edit-course/${courseId}` , formData , {withCredentials: true})
+        if(res.data.success){
+            toast.success(res.data.message)
+            setBtnLoading(false)
+            refetchSingleCourse()
+        }
+    } catch (error) {
+        console.log(error)
+        setBtnLoading(false)
+        toast.error(error.response.data.message)
+    }
+   
   };
 
   const isPublished = true;
@@ -128,7 +181,7 @@ const EditCourse = () => {
                 <SelectTrigger className="cursor-pointer w-60">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent >
                     <SelectItem value="Web Development">Web Development</SelectItem>
                     <SelectItem value="Mobile Development">Mobile Development</SelectItem>
                     <SelectItem value="Data Science & AI/ML">Data Science & AI/ML</SelectItem>

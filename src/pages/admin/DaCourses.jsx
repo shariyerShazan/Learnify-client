@@ -85,7 +85,7 @@ setTimeout(() => {
       </Card>
 
       {/* Add Course Dialog */}
-      <DaAddCourse refetch={refetchCourses} open={openDialog} setOpen={setOpenDialog} />
+      <DaAddCourse refetchCourses={refetchCourses} open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
 };

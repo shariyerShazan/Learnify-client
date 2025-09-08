@@ -14,6 +14,7 @@ export const useGetAdminCourses = () => {
                 }
             } catch (error) {
                 console.log(error)
+                dispatch(setAdminCourses(error.response.data.courses))
             }
         }, [dispatch] )
 
