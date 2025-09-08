@@ -14,6 +14,8 @@ import { useGetSingleCourse } from "@/hooks/useGetSingleCourse";
 import { toast } from "react-toastify";
 import { COURSE_API_END_POINT } from "@/utils/apiEndPoint";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 
 const EditCourse = () => {
     const {courseId} = useParams()
@@ -115,6 +117,8 @@ const EditCourse = () => {
    
   };
 
+
+//   handle publish 
   const handelPublish = async ()=>{
      try {
          const res = await axios.patch(`${COURSE_API_END_POINT}/published/${courseId}` , {} , {withCredentials: true}) 
@@ -126,6 +130,37 @@ const EditCourse = () => {
         console.log(error)
      }
   }
+
+
+//   delete course
+  const handleDeleteCourse = async () => {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      })
+  
+    if (result.isConfirmed) {
+      try {
+        const res = await axios.delete(`${COURSE_API_END_POINT}/delete-course/${courseId}`, {
+          withCredentials: true,
+        });
+  
+        if (res.data.success) {
+          Swal.fire("Deleted!", res.data.message, "success");
+          navigate("/dashboard/courses"); 
+        }
+      } catch (error) {
+        Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
+      }
+    }
+  };
+
+
 
   if(loading){
     return  <EditCourseSkeleton />
@@ -156,7 +191,7 @@ const EditCourse = () => {
                 >
                 {singleCourse.isPublished ? "Let's Unpublish" : "Let's Publish"}
          </Button>
-            <Button className={"cursor-pointer hover:scale-101"}>
+            <Button   onClick={handleDeleteCourse} className={"cursor-pointer hover:scale-101"}>
               Remove Course
             </Button>
           </div>
