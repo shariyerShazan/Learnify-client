@@ -8,8 +8,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@radix-ui/react-dropdown-menu"
 import { Loader2, Plus } from "lucide-react"
 import { useNavigate } from "react-router";
+import EditCourseSkeleton from "@/components/skeletons/EditCourseSkeleton";
 
 const EditCourse = () => {
+  const [loading , setLoading] = useState(true)
+
+    setTimeout(() => {
+        setLoading(false)
+    }, 1000);
+
     const navigate = useNavigate()
     const [btnLoading , setBtnLoading] = useState(false)
   const [input, setInput] = useState({
@@ -56,6 +63,10 @@ const EditCourse = () => {
   };
 
   const isPublished = true;
+
+  if(loading){
+    return  <EditCourseSkeleton />
+  }
 
   return (
     <div className="space-y-6">

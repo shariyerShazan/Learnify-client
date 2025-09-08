@@ -9,7 +9,7 @@ import { COURSE_API_END_POINT } from "@/utils/apiEndPoint";
 import { toast } from "react-toastify";
 import { Loader2 } from "lucide-react";
 
-const DaAddCourse = ({ open, setOpen  , refetch}) => {
+const DaAddCourse = ({ open, setOpen  , refetchCourses}) => {
     const [btnLoading , setBtnLoading] = useState(false)
   const [formData, setFormData] = useState({
     courseTitle: "",
@@ -38,7 +38,7 @@ const DaAddCourse = ({ open, setOpen  , refetch}) => {
         toast.success(res.data.message);
         setOpen(false);
         setBtnLoading(false)
-        refetch()
+        refetchCourses()
       }
     } catch (error) {
       console.log(error);

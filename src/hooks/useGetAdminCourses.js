@@ -20,7 +20,7 @@ export const useGetAdminCourses = () => {
         useEffect(()=>{
             fetchAdminCourses()
         } , [fetchAdminCourses])
-        return { refetch: fetchAdminCourses}
+        return { refetchCourses: fetchAdminCourses}
 }
 
 

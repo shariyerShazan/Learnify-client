@@ -14,10 +14,10 @@ const DaCourses = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const { refetch } = useGetAdminCourses();
+  const { refetchCourses } = useGetAdminCourses();
 
   useEffect(()=>{
-    refetch()
+    refetchCourses()
   }, [])
 
 setTimeout(() => {
@@ -85,7 +85,7 @@ setTimeout(() => {
       </Card>
 
       {/* Add Course Dialog */}
-      <DaAddCourse refetch={refetch} open={openDialog} setOpen={setOpenDialog} />
+      <DaAddCourse refetch={refetchCourses} open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
 };
