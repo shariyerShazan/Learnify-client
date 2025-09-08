@@ -1,5 +1,8 @@
+import TextEditor from '@/components/shared/admin/TextEditor'
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@radix-ui/react-dropdown-menu'
 import React from 'react'
 
 const EditCourse = () => {
@@ -27,6 +30,19 @@ const EditCourse = () => {
                     </Button>
                 </div>
              </CardHeader>
+             <CardContent className={"flex flex-col gap-2"}>
+                  <div>
+                      <Label className='my-1' >Course Title:</Label>
+                      <Input type={"text"} name="courseTitle"  placeholder="E.g Full stack developer"/>
+                  </div>
+                  <div>
+                      <Label className='my-1'>Subtitle:</Label>
+                      <Input type={"text"} name="courseTitle"  placeholder="E.g Become Fullstack in 6 months"/>
+                  </div>
+                  <div>
+                    <TextEditor />
+                  </div>
+             </CardContent>
         </Card>
     </div>
   )
