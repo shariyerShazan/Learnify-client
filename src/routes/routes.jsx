@@ -8,6 +8,8 @@ import About from "@/pages/About";
 import Profile from "@/pages/Profile";
 import Dashboard from "@/pages/admin/Dashboard";
 import DaHome from "@/pages/admin/DaHome";
+import Courses from "@/pages/Courses";
+import DaCourses from "@/pages/admin/DaCourses";
 
 export const Router = createBrowserRouter([
     {
@@ -37,8 +39,12 @@ export const Router = createBrowserRouter([
                 element: <Dashboard /> ,
                 children: [
                     {
-                        index: true ,
+                        path: "preview" ,
                         element : <DaHome />
+                    } ,
+                    {
+                        path : "courses" ,
+                        element : <DaCourses />
                     }
                 ]
             }

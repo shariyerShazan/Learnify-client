@@ -19,7 +19,7 @@ const DaSidebar = () => {
 
   const navClass = ({ isActive }) =>
     `px-4 py-2 rounded transition-colors duration-200 ${
-      isActive ? "bg-blue-500 text-white" : "hover:bg-blue-100"
+      isActive ? "bg-gray-100  border-l-blue-600 border-l-4 " : "hover:bg-blue-100"
     }`;
 
   return (
@@ -28,7 +28,7 @@ const DaSidebar = () => {
       <div className="md:hidden p-4">
         <Menu
           size={28}
-          className="cursor-pointer text-gray-700"
+          className="cursor-pointer  text-gray-700"
           onClick={(e) => {
             e.stopPropagation();
             setOpen(!open);
@@ -40,7 +40,7 @@ const DaSidebar = () => {
       <div
         ref={sidebarRef}
         className={`
-          fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300
+         h-[90vh] fixed top-0 right-0  w-64 bg-white shadow-lg transform transition-transform duration-300
           ${open ? "translate-x-0" : "translate-x-full"}
           md:translate-x-0 md:static md:flex md:flex-col md:w-64
         `}
