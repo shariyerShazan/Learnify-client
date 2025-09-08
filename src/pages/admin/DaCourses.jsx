@@ -7,8 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { useGetAdminCourses } from "@/hooks/useGetAdminCourses";
 import { useSelector } from "react-redux";
 import CourseTableSkeleton from "@/components/skeletons/CourseTableSkeleton";
+import { useNavigate } from "react-router";
 
 const DaCourses = () => {
+    const navigate = useNavigate()
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -41,6 +43,7 @@ setTimeout(() => {
             <TableHeader>
               <TableRow>
                 <TableHead className="font-bold pl-4">Course Title</TableHead>
+                <TableHead className="font-bold">Category</TableHead>
                 <TableHead className="font-bold">Price ($)</TableHead>
                 <TableHead className="font-bold">Status</TableHead>
                 <TableHead className="font-bold">Action</TableHead>
@@ -48,10 +51,11 @@ setTimeout(() => {
             </TableHeader>
             <TableBody>
               {adminCourses.length > 0 ? (
-                adminCourses.map((course) => (
-                  <TableRow key={course.id}>
+                adminCourses.map((course , index) => (
+                  <TableRow key={index}>
                     <TableCell className="pl-4">{course.courseTitle}</TableCell>
-                    <TableCell>{course.price}</TableCell>
+                    <TableCell>{course.category}</TableCell>
+                    <TableCell>{course.price || "N/A"}</TableCell>
                     <TableCell>
                       <Badge
                         className={`px-2 py-1 rounded text-white text-sm ${
@@ -62,7 +66,7 @@ setTimeout(() => {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Button size="sm" variant="outline" className="cursor-pointer">
+                      <Button onClick={()=>navigate(`/dashboard/courses/${course._id}`)} size="sm" variant="outline" className="cursor-pointer">
                         Edit
                       </Button>
                     </TableCell>
@@ -81,7 +85,7 @@ setTimeout(() => {
       </Card>
 
       {/* Add Course Dialog */}
-      <DaAddCourse open={openDialog} setOpen={setOpenDialog} />
+      <DaAddCourse refetch={refetch} open={openDialog} setOpen={setOpenDialog} />
     </div>
   );
 };

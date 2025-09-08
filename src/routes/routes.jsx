@@ -10,6 +10,7 @@ import Dashboard from "@/pages/admin/Dashboard";
 import DaHome from "@/pages/admin/DaHome";
 import Courses from "@/pages/Courses";
 import DaCourses from "@/pages/admin/DaCourses";
+import EditCourse from "@/pages/admin/EditCourse";
 
 export const Router = createBrowserRouter([
     {
@@ -45,6 +46,10 @@ export const Router = createBrowserRouter([
                     {
                         path : "courses" ,
                         element : <DaCourses />
+                    },
+                    {
+                        path : "courses/:courseId" ,
+                        element : <EditCourse />
                     }
                 ]
             }

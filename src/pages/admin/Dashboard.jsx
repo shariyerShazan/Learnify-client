@@ -1,14 +1,16 @@
 import DaSidebar from "@/components/shared/admin/DaSidebar";
-import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
+import React from "react";
+import { Outlet,
+    //  useNavigate 
+    } from "react-router";
 
 
 
 const Dashboard = () => {
-const navigate = useNavigate()
-useEffect(()=>{
-    navigate("/dashboard/preview")
-} ,[])
+// const navigate = useNavigate()
+// useEffect(()=>{
+//     navigate("/dashboard/preview")
+// } ,[])
   return (
     <div className="flex min-h-screen gap-4">
       <DaSidebar />

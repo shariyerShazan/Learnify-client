@@ -8,6 +8,7 @@ const CourseTableSkeleton = () => {
       <TableHeader>
         <TableRow>
           <TableHead className="font-bold pl-4">Course Title</TableHead>
+          <TableHead className="font-bold">Category</TableHead>
           <TableHead className="font-bold">Price ($)</TableHead>
           <TableHead className="font-bold">Status</TableHead>
           <TableHead className="font-bold">Action</TableHead>
@@ -18,6 +19,9 @@ const CourseTableSkeleton = () => {
           <TableRow key={i}>
             <TableCell className="pl-4">
               <Skeleton className="h-4 w-40" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-26" />
             </TableCell>
             <TableCell>
               <Skeleton className="h-4 w-16" />
