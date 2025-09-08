@@ -115,7 +115,17 @@ const EditCourse = () => {
    
   };
 
-  const isPublished = true;
+  const handelPublish = async ()=>{
+     try {
+         const res = await axios.patch(`${COURSE_API_END_POINT}/published/${courseId}` , {} , {withCredentials: true}) 
+         if(res.data.success){
+            toast(res.data.message)
+            refetchSingleCourse()
+         }
+     } catch (error) {
+        console.log(error)
+     }
+  }
 
   if(loading){
     return  <EditCourseSkeleton />
@@ -137,9 +147,15 @@ const EditCourse = () => {
             <p className='text-sm font-semibold'>Make changes to your course here and click save when you are done.</p>
           </div>
           <div className='flex gap-3'>
-            <Button className={"cursor-pointer hover:scale-101"} variant="secondary">
-              {isPublished ? "UnPublished" : "Published"}
-            </Button>
+          <Button
+                onClick={handelPublish}
+                className={`cursor-pointer hover:scale-105 ${
+                    singleCourse.isPublished ? "bg-red-500 hover:!bg-red-500 text-white" : " bg-green-500 hover:!bg-green-500 text-white"
+                }`}
+                variant="secondary"
+                >
+                {singleCourse.isPublished ? "Let's Unpublish" : "Let's Publish"}
+         </Button>
             <Button className={"cursor-pointer hover:scale-101"}>
               Remove Course
             </Button>
