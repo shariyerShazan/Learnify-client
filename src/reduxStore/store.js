@@ -1,6 +1,6 @@
 import { combineReducers ,configureStore} from "@reduxjs/toolkit"
 import userSlice from "./userSlice"
-
+import courseSlice from "./courseSlice"
 
 import {
     persistReducer,
@@ -23,6 +23,7 @@ import {
 
   const rootReducer = combineReducers({
     user : userSlice ,
+    course : courseSlice
   })
 
   const persistedReducer = persistReducer(persistConfig, rootReducer)
