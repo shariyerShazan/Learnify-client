@@ -89,7 +89,7 @@ const Navbar = () => {
               <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
                 <BookOpen  className="mr-2 h-4 w-4" /> My Courses
               </DropdownMenuItem>
-              <DropdownMenuItem className={"cursor-pointer"}>
+              <DropdownMenuItem onClick={()=>navigate("/dashboard")} className={"cursor-pointer"}>
                 <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
               </DropdownMenuItem>
               <DropdownMenuSeparator />

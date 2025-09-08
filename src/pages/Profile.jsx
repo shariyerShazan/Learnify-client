@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -16,6 +16,7 @@ const Profile = () => {
   const { user } = useSelector((state) => state.user)
   const imageRef = useRef()
   const [loading, setLoading] = useState(true)
+  const [btnLoading, setBtnLoading] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     profilePicture: ''
@@ -24,6 +25,7 @@ const Profile = () => {
   const [isChanged, setIsChanged] = useState(false)
 
   const { refetchUser } = useGetUser() 
+
 
   // Load user data
   useEffect(() => {
@@ -34,8 +36,12 @@ const Profile = () => {
       })
       setPreview(user.profilePicture || null)
     }
-    setLoading(false)
+    
   }, [user])
+
+  setTimeout(() => {
+    setLoading(false)
+  }, 1000);
 
   const imageSelect = () => {
     imageRef.current.click()
@@ -63,6 +69,7 @@ const Profile = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault()
+    setBtnLoading(true)
     const updatedData = new FormData()
     updatedData.append("fullName", formData.fullName)
 
@@ -81,10 +88,12 @@ const Profile = () => {
         toast.success(res.data.message)
         setIsChanged(false)
         refetchUser() 
+        setBtnLoading(false)
       }
     } catch (error) {
       console.error(error)
       toast.error("Something went wrong!")
+      setBtnLoading(false)
     }
   }
 
@@ -145,10 +154,16 @@ const Profile = () => {
           </div>
           
           {/* Update Button */}
-          <Button type="submit" disabled={!isChanged} className="w-full mt-2">
-             {isChanged ? "Update" : "Profile"}
-          </Button>
+         {
+          btnLoading ?  <Button className="w-full mt-2 cursor-pointer">
+             <Loader2 className='animate-spin'/>Please wait...
+       </Button>:
+        <Button type="submit" disabled={!isChanged} className="w-full mt-2 cursor-pointer">
+        {isChanged ? "Update" : "Profile"}
+     </Button>
 
+
+         }
         </form>
       </Card>
     </div>

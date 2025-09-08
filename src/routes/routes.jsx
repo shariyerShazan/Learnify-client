@@ -6,6 +6,8 @@ import Login from "@/pages/authPages/Login";
 import MyCourses from "@/pages/students/MyCourses";
 import About from "@/pages/About";
 import Profile from "@/pages/Profile";
+import Dashboard from "@/pages/admin/Dashboard";
+import DaHome from "@/pages/admin/DaHome";
 
 export const Router = createBrowserRouter([
     {
@@ -29,6 +31,16 @@ export const Router = createBrowserRouter([
             {
                 path: "profile" ,
                 element: <Profile/>
+            } ,
+            {
+                path: "Dashboard" ,
+                element: <Dashboard /> ,
+                children: [
+                    {
+                        index: true ,
+                        element : <DaHome />
+                    }
+                ]
             }
         ] ,
     } ,
