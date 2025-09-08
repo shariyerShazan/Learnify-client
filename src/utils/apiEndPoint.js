@@ -1,1 +1,2 @@
 export const USER_API_END_POINT = "http://localhost:9000/api/users"
+export const COURSE_API_END_POINT = "http://localhost:9000/api/courses"

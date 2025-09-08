@@ -4,8 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import axios from "axios";
+import { COURSE_API_END_POINT } from "@/utils/apiEndPoint";
+import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
 const DaAddCourse = ({ open, setOpen }) => {
+    const [btnLoading , setBtnLoading] = useState(false)
   const [formData, setFormData] = useState({
     courseTitle: "",
     category: ""
@@ -19,10 +24,28 @@ const DaAddCourse = ({ open, setOpen }) => {
     setFormData({ ...formData, category: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setBtnLoading(true)
     e.preventDefault();
-    console.log(formData); // later api call
-    setOpen(false);
+    console.log(formData)
+    try {
+      const res = await axios.post(
+        `${COURSE_API_END_POINT}/create-course`,
+        formData,
+        { withCredentials: true }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setOpen(false);
+        setBtnLoading(false)
+      }
+    } catch (error) {
+      console.log(error);
+      setBtnLoading(false)
+      toast.error(error.response?.data?.message);
+    }finally{
+        setBtnLoading(false)
+    }
   };
 
   return (
@@ -46,19 +69,28 @@ const DaAddCourse = ({ open, setOpen }) => {
           <div className="flex flex-col gap-1">
             <Label>Category</Label>
             <Select onValueChange={handleCategoryChange}>
-              <SelectTrigger>
+              <SelectTrigger className="cursor-pointer">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="javascript">JavaScript</SelectItem>
-                <SelectItem value="mern">MERN</SelectItem>
-                <SelectItem value="ai-ml">AI & ML</SelectItem>
+                <SelectItem value="JavaScript">JavaScript</SelectItem>
+                <SelectItem value="Mern stack">MERN Stack</SelectItem>
+                <SelectItem value="AI ML">AI & ML</SelectItem>
+                <SelectItem value="Mobile App">Mobile App</SelectItem>
+                <SelectItem value="Software Development">Software Development</SelectItem>
+                <SelectItem value="Game Development">Game Development</SelectItem>
+                <SelectItem value="Coding">Coding</SelectItem>
+                <SelectItem value="Math">Math</SelectItem>
+                <SelectItem value="Engineering">Engineering</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <DialogFooter>
-            <Button type="submit">Add Course</Button>
+            {
+                btnLoading ?   <Button disabled={true}><Loader2 className=" animate-spin"/>Please wait...</Button> :
+                <Button type="submit" className="cursor-pointer">Add Course</Button>
+            }
           </DialogFooter>
         </form>
       </DialogContent>
