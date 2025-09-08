@@ -7,6 +7,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import ProfileSkeleton from '@/components/skeletons/ProfileSkeleton'
+import axios from 'axios'
+import { USER_API_END_POINT } from '@/utils/apiEndPoint'
+import { toast } from 'react-toastify'
+import { useGetUser } from '@/hooks/useGetUser'
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user)
@@ -19,23 +23,23 @@ const Profile = () => {
   const [preview, setPreview] = useState(null)
   const [isChanged, setIsChanged] = useState(false)
 
-  // Simulate loading
+  const { refetchUser } = useGetUser() 
+
+  // Load user data
   useEffect(() => {
-    setTimeout(() => {
-      if (user) {
-        setFormData({
-          fullName: user.fullName,
-          profilePicture: user.profilePicture 
-        })
-        setPreview(user.profilePicture || null)
-      }
-      setLoading(false)
-    }, 1000)
+    if (user) {
+      setFormData({
+        fullName: user.fullName,
+        profilePicture: user.profilePicture 
+      })
+      setPreview(user.profilePicture || null)
+    }
+    setLoading(false)
   }, [user])
 
-  const imageSelect = () =>{
-     imageRef.current.click()
-    }
+  const imageSelect = () => {
+    imageRef.current.click()
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -57,10 +61,31 @@ const Profile = () => {
     setIsChanged(true)
   }
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault()
-    console.log('Updated Data:', formData, preview)
-    setIsChanged(false)
+    const updatedData = new FormData()
+    updatedData.append("fullName", formData.fullName)
+
+    if (imageRef.current.files[0]) {
+      updatedData.append("profilePicture", imageRef.current.files[0])
+    }
+
+    try {
+      const res = await axios.patch(
+        `${USER_API_END_POINT}/update-user`,
+        updatedData,
+        { withCredentials: true }
+      )
+
+      if(res.data.success){
+        toast.success(res.data.message)
+        setIsChanged(false)
+        refetchUser() 
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("Something went wrong!")
+    }
   }
 
   if (loading) return <ProfileSkeleton />
@@ -85,7 +110,7 @@ const Profile = () => {
                 />
                 <AvatarFallback className="w-full h-full rounded-full ">DP</AvatarFallback>    
               </Avatar>
-              <Plus size={28} className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-600' />
+              <Plus size={28} className='absolute top-1/2 hidden group-hover:block left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-600' />
             </div>
             <input 
               ref={imageRef} 
@@ -119,10 +144,9 @@ const Profile = () => {
             <Input value={user.role} readOnly className="cursor-not-allowed bg-gray-100" />
           </div>
           
-
           {/* Update Button */}
           <Button type="submit" disabled={!isChanged} className="w-full mt-2">
-             {!isChanged ? "Profile" : "Update"}
+             {isChanged ? "Update" : "Profile"}
           </Button>
 
         </form>
