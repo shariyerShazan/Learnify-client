@@ -53,20 +53,20 @@ setTimeout(() => {
               {adminCourses.length > 0 ? (
                 adminCourses.map((course , index) => (
                   <TableRow key={index}>
-                    <TableCell className="pl-4">{course.courseTitle}</TableCell>
-                    <TableCell>{course.category}</TableCell>
-                    <TableCell>{course.price || "N/A"}</TableCell>
+                    <TableCell className="pl-4">{course?.courseTitle}</TableCell>
+                    <TableCell>{course?.category}</TableCell>
+                    <TableCell>{course?.coursePrice || "N/A"}</TableCell>
                     <TableCell>
                       <Badge
                         className={`px-2 py-1 rounded text-white text-sm ${
                           course.isPublished ? "bg-green-500" : "bg-gray-500 px-4"
                         }`}
                       >
-                        {course.isPublished ? "Published" : "Draft"}
+                        {course?.isPublished ? "Published" : "Draft"}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Button onClick={()=>navigate(`/dashboard/courses/${course._id}`)} size="sm" variant="outline" className="cursor-pointer">
+                      <Button onClick={()=>navigate(`/dashboard/courses/${course?._id}`)} size="sm" variant="outline" className="cursor-pointer">
                         Edit
                       </Button>
                     </TableCell>
