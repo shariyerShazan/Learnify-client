@@ -73,17 +73,24 @@ const DaAddCourse = ({ open, setOpen  , refetch}) => {
               <SelectTrigger className="cursor-pointer">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="JavaScript">JavaScript</SelectItem>
-                <SelectItem value="Mern stack">MERN Stack</SelectItem>
-                <SelectItem value="AI ML">AI & ML</SelectItem>
-                <SelectItem value="Mobile App">Mobile App</SelectItem>
-                <SelectItem value="Software Development">Software Development</SelectItem>
-                <SelectItem value="Game Development">Game Development</SelectItem>
-                <SelectItem value="Coding">Coding</SelectItem>
-                <SelectItem value="Math">Math</SelectItem>
-                <SelectItem value="Engineering">Engineering</SelectItem>
-              </SelectContent>
+                    <SelectContent>
+                        <SelectItem value="Web Development">Web Development</SelectItem>
+                        <SelectItem value="Mobile Development">Mobile Development</SelectItem>
+                        <SelectItem value="Data Science & AI/ML">Data Science & AI/ML</SelectItem>
+                        <SelectItem value="Cloud & DevOps">Cloud & DevOps</SelectItem>
+                        <SelectItem value="Cybersecurity & Networking">Cybersecurity & Networking</SelectItem>
+                        <SelectItem value="Game Development & AR/VR">Game Development & AR/VR</SelectItem>
+                        <SelectItem value="Software Engineering & Programming">Software Engineering & Programming</SelectItem>
+                        <SelectItem value="Digital Marketing & SEO">Digital Marketing & SEO</SelectItem>
+                        <SelectItem value="UI/UX & Design">UI/UX & Design</SelectItem>
+                        <SelectItem value="Business & Entrepreneurship">Business & Entrepreneurship</SelectItem>
+                        <SelectItem value="Finance & Accounting">Finance & Accounting</SelectItem>
+                        <SelectItem value="Health & Fitness">Health & Fitness</SelectItem>
+                        <SelectItem value="Photography & Videography">Photography & Videography</SelectItem>
+                        <SelectItem value="Languages & Communication">Languages & Communication</SelectItem>
+                        <SelectItem value="Personal Development">Personal Development</SelectItem>
+                    </SelectContent>
+    
             </Select>
           </div>
 
