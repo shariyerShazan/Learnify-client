@@ -5,14 +5,15 @@ import { useGetSingleCourse } from "@/hooks/useGetSingleCourse";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { PlayCircle } from "lucide-react";
+import { PlayCircle, Lock, ChevronRight } from "lucide-react";
 
 const CourseProgress = () => {
   const { courseId } = useParams();
   const { refetchSingleCourse, loading, error } = useGetSingleCourse(courseId);
-
   const { singleCourse } = useSelector((state) => state.course);
+
   const [currentLecture, setCurrentLecture] = useState(null);
+  const [unlockedLectures, setUnlockedLectures] = useState([]); // unlocked lectures ids
 
   useEffect(() => {
     refetchSingleCourse();
@@ -20,13 +21,41 @@ const CourseProgress = () => {
 
   useEffect(() => {
     if (singleCourse?.lectures?.length > 0) {
-      setCurrentLecture(singleCourse.lectures[0]); 
+      setCurrentLecture(singleCourse.lectures[0]);
+      setUnlockedLectures([singleCourse.lectures[0]._id]); // lecture unlock
     }
   }, [singleCourse]);
+
+  const handleLectureClick = (lecture) => {
+    if (!unlockedLectures.includes(lecture._id)) return;
+    setCurrentLecture(lecture);
+  };
+
+  const handleVideoEnded = () => {
+    const currentIndex = singleCourse.lectures.findIndex(
+      (lec) => lec._id === currentLecture._id
+    );
+    const nextLecture = singleCourse.lectures[currentIndex + 1];
+    if (nextLecture) {
+      setUnlockedLectures((prev) => [...prev, nextLecture._id]); // next lecture unlock
+    }
+  };
+
+  const handleNextLecture = () => {
+    const currentIndex = singleCourse.lectures.findIndex(
+      (lec) => lec._id === currentLecture._id
+    );
+    const nextLecture = singleCourse.lectures[currentIndex + 1];
+    if (nextLecture && unlockedLectures.includes(nextLecture._id)) {
+      setCurrentLecture(nextLecture);
+    }
+  };
+  
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
   if (!singleCourse) return <p className="text-center mt-10">No course found</p>;
+
 
   return (
     <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -39,11 +68,50 @@ const CourseProgress = () => {
         </CardHeader>
         <CardContent>
           {currentLecture ? (
-            <video
-              src={currentLecture.videoUrl}
-              controls
-              className="w-full h-[450px] rounded-lg border"
-            />
+            <div>
+              <video
+                src={currentLecture.videoUrl}
+                controls
+                autoPlay
+                muted  
+                className="w-full h-[450px] rounded-lg border"
+                onEnded={handleVideoEnded}
+              />
+              {/* Next Button */}
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={handleNextLecture}
+                  disabled={
+                    singleCourse.lectures.findIndex(
+                      (lec) => lec._id === currentLecture._id
+                    ) === singleCourse.lectures.length - 1 ||
+                    !unlockedLectures.includes(
+                      singleCourse.lectures[
+                        singleCourse.lectures.findIndex(
+                          (lec) => lec._id === currentLecture._id
+                        ) + 1
+                      ]._id
+                    )
+                  }
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition cursor-pointer ${
+                    singleCourse.lectures.findIndex(
+                      (lec) => lec._id === currentLecture._id
+                    ) === singleCourse.lectures.length - 1 ||
+                    !unlockedLectures.includes(
+                      singleCourse.lectures[
+                        singleCourse.lectures.findIndex(
+                          (lec) => lec._id === currentLecture._id
+                        ) + 1
+                      ]._id
+                    )
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-blue-600 text-white hover:bg-blue-700"
+                  }`}
+                >
+                  Next Lecture <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="flex items-center justify-center h-[450px] border rounded-lg text-gray-500">
               Select a lecture to start
@@ -61,22 +129,37 @@ const CourseProgress = () => {
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[450px] pr-2">
-            {singleCourse.lectures.map((lecture, index) => (
-              <div key={lecture._id}>
-                <div
-                  onClick={() => setCurrentLecture(lecture)}
-                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition ${
-                    currentLecture?._id === lecture._id ? "bg-gray-200" : ""
-                  }`}
-                >
-                  <PlayCircle className="w-5 h-5 text-gray-600" />
-                  <span className="font-medium text-gray-800">
-                    {index + 1}. {lecture.lectureTitle}
-                  </span>
+            {singleCourse.lectures.map((lecture, index) => {
+              const isUnlocked = unlockedLectures.includes(lecture._id);
+              return (
+                <div key={lecture._id}>
+                  <div
+                    onClick={() => handleLectureClick(lecture)}
+                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition ${
+                      currentLecture?._id === lecture._id
+                        ? "bg-gray-200"
+                        : isUnlocked
+                        ? "hover:bg-gray-100"
+                        : "bg-gray-50 cursor-not-allowed"
+                    }`}
+                  >
+                    {isUnlocked ? (
+                      <PlayCircle className="w-5 h-5 text-gray-600" />
+                    ) : (
+                      <Lock className="w-5 h-5 text-gray-400" />
+                    )}
+                    <span
+                      className={`font-medium ${
+                        isUnlocked ? "text-gray-800" : "text-gray-400"
+                      }`}
+                    >
+                      {index + 1}. {lecture.lectureTitle}
+                    </span>
+                  </div>
+                  <Separator className="my-2" />
                 </div>
-                <Separator className="my-2" />
-              </div>
-            ))}
+              );
+            })}
           </ScrollArea>
         </CardContent>
       </Card>
