@@ -1,83 +1,87 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { useGetSingleCourse } from "@/hooks/useGetSingleCourse"
-import { PlayCircleIcon } from "lucide-react"
-import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { useParams } from "react-router"
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import { useGetSingleCourse } from "@/hooks/useGetSingleCourse";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { PlayCircle } from "lucide-react";
 
 const CourseProgress = () => {
-  const { courseId } = useParams()
-  const { fetchSingleCourse } = useGetSingleCourse(courseId)
-  const { singleCourse } = useSelector((state) => state.course)
+  const { courseId } = useParams();
+  const { refetchSingleCourse, loading, error } = useGetSingleCourse(courseId);
 
-  const [selectedLecture, setSelectedLecture] = useState(null)
+  const { singleCourse } = useSelector((state) => state.course);
+  const [currentLecture, setCurrentLecture] = useState(null);
 
   useEffect(() => {
-    fetchSingleCourse()
-  }, [courseId])
+    refetchSingleCourse();
+  }, [refetchSingleCourse]);
 
   useEffect(() => {
     if (singleCourse?.lectures?.length > 0) {
-      setSelectedLecture(singleCourse.lectures[0])
+      setCurrentLecture(singleCourse.lectures[0]); 
     }
-  }, [singleCourse])
+  }, [singleCourse]);
 
-  if (!singleCourse) {
-    return <p className="text-center mt-10 animate-pulse">Loading...</p>
-  }
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
+  if (!singleCourse) return <p className="text-center mt-10">No course found</p>;
 
   return (
-    <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Left side - Video player */}
-      <Card className="col-span-2 shadow-lg">
+    <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Left - Video Player */}
+      <Card className="col-span-2">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">
-            {selectedLecture?.lectureTitle || "Select a Lecture"}
+            {currentLecture?.lectureTitle || "Select a Lecture"}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {selectedLecture ? (
+          {currentLecture ? (
             <video
-              key={selectedLecture._id}
-              src={selectedLecture.videoUrl}
+              src={currentLecture.videoUrl}
               controls
-              className="w-full h-[500px] rounded-lg border"
+              className="w-full h-[450px] rounded-lg border"
             />
           ) : (
-            <p className="text-gray-500">Please select a lecture to start.</p>
+            <div className="flex items-center justify-center h-[450px] border rounded-lg text-gray-500">
+              Select a lecture to start
+            </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Right side - Lecture list */}
-      <Card className="shadow-lg">
+      {/* Right - Lecture List */}
+      <Card>
         <CardHeader>
-          <CardTitle className="text-xl font-semibold">Lectures</CardTitle>
+          <CardTitle className="text-xl font-bold">
+            Lectures ({singleCourse.lectures.length})
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[500px] pr-2">
-            <div className="space-y-2">
-              {singleCourse.lectures.map((lecture) => (
+          <ScrollArea className="h-[450px] pr-2">
+            {singleCourse.lectures.map((lecture, index) => (
+              <div key={lecture._id}>
                 <div
-                  key={lecture._id}
-                  onClick={() => setSelectedLecture(lecture)}
-                  className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-all ${
-                    selectedLecture?._id === lecture._id
-                      ? "bg-blue-100 font-semibold"
-                      : "hover:bg-gray-100"
+                  onClick={() => setCurrentLecture(lecture)}
+                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition ${
+                    currentLecture?._id === lecture._id ? "bg-gray-200" : ""
                   }`}
                 >
-                  <PlayCircleIcon className="w-5 h-5 text-gray-600" />
-                  <span>{lecture.lectureTitle}</span>
+                  <PlayCircle className="w-5 h-5 text-gray-600" />
+                  <span className="font-medium text-gray-800">
+                    {index + 1}. {lecture.lectureTitle}
+                  </span>
                 </div>
-              ))}
-            </div>
+                <Separator className="my-2" />
+              </div>
+            ))}
           </ScrollArea>
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default CourseProgress
+export default CourseProgress;
