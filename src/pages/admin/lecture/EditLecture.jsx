@@ -10,20 +10,23 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import EditLectureSkeleton from '@/components/skeletons/EditLectureSkeleton';
 import { LECTURE_API_END_POINT } from '@/utils/apiEndPoint';
-
+import EditLectureSkeleton from '@/components/skeletons/EditLectureSkeleton';
 
 const EditLecture = () => {
   const { courseId, lectureId } = useParams();
   const navigate = useNavigate();
   const { refetchSingleLecture } = useGetSingleLecture(lectureId);
 
+  useEffect(()=>{
+    refetchSingleLecture()
+  },[])
+
   const { singleLecture } = useSelector(state => state.course);
 
   const [lectureData, setLectureData] = useState({
     lectureTitle: "",
-    video: null,
+    video: "",
     freeVideo: false
   });
 
@@ -31,21 +34,17 @@ const EditLecture = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // Load single lecture
   useEffect(() => {
-    const loadLecture = async () => {
-      await refetchSingleLecture();
-      setLoading(false);
-    };
-    loadLecture();
-  }, [refetchSingleLecture]);
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // Fill state when singleLecture loaded
+  // lecture data fill
   useEffect(() => {
     if(singleLecture){
       setLectureData({
-        lectureTitle: singleLecture.lectureTitle,
-        video: null,
+        lectureTitle: singleLecture.lectureTitle || "",
+        video: singleLecture.videoUrl || "",
         freeVideo: singleLecture.freeVideo || false
       });
     }
@@ -56,9 +55,9 @@ const EditLecture = () => {
     setLectureData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckboxChange = (e) => {
-    setLectureData(prev => ({ ...prev, freeVideo: e.target.checked }));
-  };
+  const handleCheckboxChange = (checked) => {
+    setLectureData(prev => ({ ...prev, freeVideo: checked === true }));
+  };  
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
@@ -122,50 +121,53 @@ const EditLecture = () => {
           </CardHeader>
 
           <CardContent>
-            <div className="space-y-4">
-              <div>
-                <Label className="m-1">Lecture Title:</Label>
-                <Input 
-                  type="text"
-                  name="lectureTitle"
-                  value={lectureData.lectureTitle}
-                  onChange={handleInputChange}
-                />
-              </div>
+            {/* Nested Card */}
+            <Card>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label className="m-1">Lecture Title:</Label>
+                  <Input 
+                    type="text"
+                    name="lectureTitle"
+                    value={lectureData.lectureTitle}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-              <div>
-                <Label className="m-1">Lecture Video:</Label>
-                <Input
-                  type="file"
-                  accept="video/*"
-                  onChange={handleVideoChange}
-                />
-                {uploadProgress > 0 && (
-                  <p className="text-sm text-blue-500 mt-1">Uploading: {uploadProgress}%</p>
+                <div>
+                  <Label className="m-1">Lecture Video:</Label>
+                  <Input
+                    type="file"
+                    accept="video/*"
+                    onChange={handleVideoChange}
+                  />
+                  {uploadProgress > 0 && (
+                    <p className="text-sm text-blue-500 mt-1">Uploading: {uploadProgress}%</p>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    checked={lectureData.freeVideo}
+                    onCheckedChange={handleCheckboxChange}
+                  />
+                  <p>Is this video free?</p>
+                </div>
+              </CardContent>
+
+              <CardFooter>
+                {btnLoading ? (
+                  <Button variant="secondary">
+                    <Loader2 className="animate-spin mr-2" /> Please wait...
+                  </Button>
+                ) : (
+                  <Button onClick={handleUpdateLecture}>
+                    Update lecture
+                  </Button>
                 )}
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={lectureData.freeVideo}
-                  onCheckedChange={handleCheckboxChange}
-                />
-                <p>Is this video free?</p>
-              </div>
-            </div>
+              </CardFooter>
+            </Card>
           </CardContent>
-
-          <CardFooter>
-            {btnLoading ? (
-              <Button variant="secondary">
-                <Loader2 className="animate-spin mr-2" /> Please wait...
-              </Button>
-            ) : (
-              <Button onClick={handleUpdateLecture}>
-                Update lecture
-              </Button>
-            )}
-          </CardFooter>
         </Card>
       )}
     </div>
