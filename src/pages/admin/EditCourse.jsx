@@ -191,7 +191,7 @@ const EditCourse = () => {
                 >
                 {singleCourse.isPublished ? "Let's Unpublish" : "Let's Publish"}
          </Button>
-            <Button   onClick={handleDeleteCourse} className={"cursor-pointer hover:scale-101"}>
+            <Button variant={"destructive"}  onClick={handleDeleteCourse} className={"cursor-pointer hover:scale-101"}>
               Remove Course
             </Button>
           </div>
