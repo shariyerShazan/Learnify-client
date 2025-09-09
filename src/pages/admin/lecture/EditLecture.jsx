@@ -12,6 +12,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LECTURE_API_END_POINT } from '@/utils/apiEndPoint';
 import EditLectureSkeleton from '@/components/skeletons/EditLectureSkeleton';
+import Swal from "sweetalert2";
 
 const EditLecture = () => {
   const { courseId, lectureId } = useParams();
@@ -56,8 +57,11 @@ const EditLecture = () => {
   };
 
   const handleCheckboxChange = (checked) => {
-    setLectureData(prev => ({ ...prev, freeVideo: checked === true }));
-  };  
+    setLectureData(prev => ({ 
+      ...prev, 
+      freeVideo: checked === true ? true : false 
+    }));
+  };
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
@@ -87,6 +91,7 @@ const EditLecture = () => {
       if(res.data.success){
         toast.success(res.data.message);
         setUploadProgress(0);
+        navigate(`/dashboard/courses/${courseId}/lectures`)
         refetchSingleLecture();
       }
     } catch (error) {
@@ -96,11 +101,35 @@ const EditLecture = () => {
       setBtnLoading(false);
     }
   };
+  const handleDelete = async ()=>{
+     const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          })
+          if(result.isConfirmed){
+            try {
+                const res = await axios.delete(`${LECTURE_API_END_POINT}/delete-lecture/${lectureId}` , {withCredentials: true})
+                if(res.data.success){
+                    toast.success(res.data.message)
+                    navigate(`/dashboard/courses/${courseId}/lectures`)
+                }
+            } catch (error) {
+              console.log(error);
+              toast.error(error.response?.data?.message || "Something went wrong");
+            }
+          }
+     
+  }
 
   return (
     <div>
       <div className='flex gap-4 mb-4'>
-        <Button onClick={()=>navigate(`/dashboard/courses/${courseId}/lectures`)} variant={"secondary"}>
+        <Button className={"cursor-pointer"} onClick={()=>navigate(`/dashboard/courses/${courseId}/lectures`)} variant={"secondary"}>
           <ArrowBigLeftIcon />
         </Button>
         <p className='font-bold text-xl'>Update Your Lecture</p>
@@ -115,7 +144,7 @@ const EditLecture = () => {
               <h3 className='text-lg font-bold'>Edit Lecture</h3>
               <p>Make changes and click save when done.</p>
             </div>
-            <Button variant="destructive">
+            <Button className={"cursor-pointer"} onClick={()=>handleDelete()} variant="destructive">
               Remove lecture
             </Button>
           </CardHeader>
@@ -144,11 +173,24 @@ const EditLecture = () => {
                   {uploadProgress > 0 && (
                     <p className="text-sm text-blue-500 mt-1">Uploading: {uploadProgress}%</p>
                   )}
+
+                        {singleLecture?.videoUrl && (
+                            <div className="mt-2">
+                            <video
+                                src={singleLecture.videoUrl}
+                                controls
+                                className="w-full max-w-md rounded border"
+                            >
+                                Your browser does not support the video tag.
+                            </video>
+                            </div>
+                        )}
                 </div>
+              
 
                 <div className="flex items-center gap-2">
                   <Checkbox
-                    checked={lectureData.freeVideo}
+                    checked={lectureData?.freeVideo}
                     onCheckedChange={handleCheckboxChange}
                   />
                   <p>Is this video free?</p>
@@ -161,7 +203,7 @@ const EditLecture = () => {
                     <Loader2 className="animate-spin mr-2" /> Please wait...
                   </Button>
                 ) : (
-                  <Button onClick={handleUpdateLecture}>
+                  <Button className={"cursor-pointer"} onClick={handleUpdateLecture}>
                     Update lecture
                   </Button>
                 )}
