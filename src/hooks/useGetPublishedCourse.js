@@ -10,7 +10,7 @@ export const useGetPublishedCourse = () => {
   const fetchPublishedCourse = useCallback(async () => {
     try {
       const res = await axios.get(
-        `${COURSE_API_END_POINT}/published-courses`,
+        `${COURSE_API_END_POINT}/published-course`,
         { withCredentials: true }
       );
 
