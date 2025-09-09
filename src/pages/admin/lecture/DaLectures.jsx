@@ -1,94 +1,105 @@
-
-import React, { useEffect, useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import DaAddCourse from "@/components/shared/admin/DaAddCourse";
-import { Badge } from "@/components/ui/badge";
-import { useGetAdminCourses } from "@/hooks/useGetAdminCourses";
-import { useSelector } from "react-redux";
-import CourseTableSkeleton from "@/components/skeletons/CourseTableSkeleton";
-import { useNavigate } from "react-router";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Label } from '@/components/ui/label'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { useSelector } from 'react-redux'
+import LectureTableSkeleton from '@/components/skeletons/LectureTableSkeleton'
 
 const DaLectures = () => {
-    const navigate = useNavigate()
-  const [openDialog, setOpenDialog] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { courseId } = useParams()
+  const navigate = useNavigate()
 
-  const { refetchCourses } = useGetAdminCourses();
+  // Redux থেকে lecture নেওয়া হচ্ছে
+  const lectures = useSelector((state) => state.course.singleCourse?.lectures || [])
 
-  useEffect(()=>{
-    refetchCourses()
+  const [lectureTitle, setLectureTitle] = useState("")
+  const [loading, setLoading] = useState(true)
+
+  // প্রথমে ১ সেকেন্ড loading দেখাবে
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000)
+    return () => clearTimeout(timer)
   }, [])
 
-setTimeout(() => {
-    setLoading(false)
-}, 1000);
-
-  const { adminCourses } = useSelector((state) => state.course);
+  const handleCreateLecture = () => {
+    if (!lectureTitle.trim()) return
+    // এখানে lecture তৈরি করার API call হবে
+    console.log("Lecture created:", lectureTitle)
+    setLectureTitle("")
+  }
 
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Courses</h2>
-        <Button className="cursor-pointer" onClick={() => setOpenDialog(true)}>
-          Create New Course
-        </Button>
-      </div>
+    <div>
+      <Card>
+        <CardHeader>
+          <h3 className='text-xl font-bold'>Let's add lectures, and lecture details...</h3>
+        </CardHeader>
+        <CardContent>
+          <div>
+            <Label className='m-1'>Lecture Title:</Label>
+            <Input
+              type="text"
+              placeholder="E.g Intro video"
+              value={lectureTitle}
+              onChange={(e) => setLectureTitle(e.target.value)}
+            />
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button onClick={() => navigate(`/dashboard/courses/${courseId}`)}>
+            Back to course
+          </Button>
+          <Button onClick={handleCreateLecture}>
+            Create Lecture
+          </Button>
+        </CardFooter>
+      </Card>
 
-      <Card className="overflow-x-auto">
-        {loading ? (
-          <CourseTableSkeleton />
-        ) : (
+      {/* Table */}
+      <Card className="mt-5">
+        <CardHeader>
+          <h3 className="text-lg font-semibold">Lectures</h3>
+        </CardHeader>
+        <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="font-bold pl-4">Course Title</TableHead>
-                <TableHead className="font-bold">Category</TableHead>
-                <TableHead className="font-bold">Price ($)</TableHead>
-                <TableHead className="font-bold">Status</TableHead>
-                <TableHead className="font-bold">Action</TableHead>
+                <TableHead>#</TableHead>
+                <TableHead>Lecture Title</TableHead>
+                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminCourses.length > 0 ? (
-                adminCourses.map((course , index) => (
-                  <TableRow key={index}>
-                    <TableCell className="pl-4">{course?.courseTitle}</TableCell>
-                    <TableCell>{course?.category}</TableCell>
-                    <TableCell>{course?.coursePrice || "N/A"}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={`px-2 py-1 rounded text-white text-sm ${
-                          course.isPublished ? "bg-green-500" : "bg-gray-500 px-4"
-                        }`}
-                      >
-                        {course?.isPublished ? "Published" : "Draft"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Button onClick={()=>navigate(`/dashboard/courses/${course?._id}`)} size="sm" variant="outline" className="cursor-pointer">
+              {loading ? (
+                <LectureTableSkeleton rows={3} />
+              ) : lectures.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center text-gray-500">
+                    No lectures created yet
+                  </TableCell>
+                </TableRow>
+              ) : (
+                lectures.map((lecture, index) => (
+                  <TableRow key={lecture._id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{lecture.lectureTitle}</TableCell>
+                    <TableCell className="text-right">
+                      <Button size="sm" variant="outline">
                         Edit
                       </Button>
                     </TableCell>
                   </TableRow>
                 ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center py-6 text-gray-500">
-                    No course created
-                  </TableCell>
-                </TableRow>
               )}
             </TableBody>
           </Table>
-        )}
+        </CardContent>
       </Card>
-
-      {/* Add Course Dialog */}
-      <DaAddCourse refetchCourses={refetchCourses} open={openDialog} setOpen={setOpenDialog} />
     </div>
-  );
-};
+  )
+}
 
-export default DaLectures;
+export default DaLectures
