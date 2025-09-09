@@ -13,6 +13,7 @@ import DaCourses from "@/pages/admin/DaCourses";
 import EditCourse from "@/pages/admin/EditCourse";
 import DaLectures from "@/pages/admin/lecture/DaLectures";
 import EditLecture from "@/pages/admin/lecture/EditLecture";
+import CourseDetails from "@/pages/CourseDetails";
 
 export const Router = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ export const Router = createBrowserRouter([
                 path: "profile" ,
                 element: <Profile/>
             } ,
+            {
+                path: "course-details/:courseId" ,
+                element : <CourseDetails />
+            },
             {
                 path: "Dashboard" ,
                 element: <Dashboard /> ,
