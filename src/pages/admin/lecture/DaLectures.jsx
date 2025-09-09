@@ -7,28 +7,42 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import LectureTableSkeleton from '@/components/skeletons/LectureTableSkeleton'
+import axios from 'axios'
+import { LECTURE_API_END_POINT } from '@/utils/apiEndPoint'
+import { toast } from 'react-toastify'
+import { useGetSingleCourse } from '@/hooks/useGetSingleCourse'
 
 const DaLectures = () => {
   const { courseId } = useParams()
   const navigate = useNavigate()
 
-  // Redux থেকে lecture নেওয়া হচ্ছে
-  const lectures = useSelector((state) => state.course.singleCourse?.lectures || [])
+  const {refetchSingleCourse} = useGetSingleCourse(courseId)
+const {singleCourse} = useSelector((state)=> state.course)
 
   const [lectureTitle, setLectureTitle] = useState("")
   const [loading, setLoading] = useState(true)
-
-  // প্রথমে ১ সেকেন্ড loading দেখাবে
+ 
   useEffect(() => {
+    refetchSingleCourse()
     const timer = setTimeout(() => setLoading(false), 1000)
     return () => clearTimeout(timer)
   }, [])
 
-  const handleCreateLecture = () => {
+  const handleCreateLecture = async () => {
     if (!lectureTitle.trim()) return
-    // এখানে lecture তৈরি করার API call হবে
-    console.log("Lecture created:", lectureTitle)
-    setLectureTitle("")
+       
+    try {
+      const res = await axios.post(`${LECTURE_API_END_POINT}/create-lecture/${courseId}` , {lectureTitle} , {withCredentials: true})
+      if(res.data.success){
+          toast(res.data.message)
+           setLectureTitle("")
+           refetchSingleCourse()
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.data.message)
+    }
+   
   }
 
   return (
@@ -49,10 +63,10 @@ const DaLectures = () => {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button onClick={() => navigate(`/dashboard/courses/${courseId}`)}>
+          <Button variant={"secondary"} className={"hover:scale-101 cursor-pointer"} onClick={() => navigate(`/dashboard/courses/${courseId}`)}>
             Back to course
           </Button>
-          <Button onClick={handleCreateLecture}>
+          <Button className={"hover:scale-101 cursor-pointer"} onClick={handleCreateLecture}>
             Create Lecture
           </Button>
         </CardFooter>
@@ -67,27 +81,27 @@ const DaLectures = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>#</TableHead>
-                <TableHead>Lecture Title</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead className={" font-bold"}>#</TableHead>
+                <TableHead className={"font-bold w-full "}>Lecture Title</TableHead>
+                <TableHead className="text-right font-bold">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
                 <LectureTableSkeleton rows={3} />
-              ) : lectures.length === 0 ? (
+              ) : singleCourse?.lectures.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center text-gray-500">
                     No lectures created yet
                   </TableCell>
                 </TableRow>
               ) : (
-                lectures.map((lecture, index) => (
+                singleCourse?.lectures.map((lecture, index) => (
                   <TableRow key={lecture._id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{lecture.lectureTitle}</TableCell>
+                    <TableCell>Lecture - {index + 1}: </TableCell>
+                    <TableCell className={"font-semibold"}>{lecture.lectureTitle}</TableCell>
                     <TableCell className="text-right">
-                      <Button size="sm" variant="outline">
+                      <Button onClick={()=>{navigate(`${lecture._id}`)}} className={"hover:scale-101 cursor-pointer"} size="sm" variant="outline">
                         Edit
                       </Button>
                     </TableCell>
