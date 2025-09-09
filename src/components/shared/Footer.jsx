@@ -3,23 +3,42 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/f
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white py-12 mt-12">
-      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+    <footer className="text-gray-800 py-12 border-t border-gray-200 mt-16">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between gap-10">
         
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Learnify</h2>
-          <p className="max-w-sm">Empowering students and instructors with interactive learning solutions worldwide.</p>
+        {/* Branding */}
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold">Learnify</h2>
+          <p className="text-gray-600 max-w-sm">
+            Empowering students and instructors with interactive online learning solutions.
+          </p>
         </div>
 
-        <div className="flex gap-6">
-          <a href="#" className="hover:text-yellow-300 transition duration-300"><FaFacebookF size={20} /></a>
-          <a href="#" className="hover:text-yellow-300 transition duration-300"><FaTwitter size={20} /></a>
-          <a href="#" className="hover:text-yellow-300 transition duration-300"><FaLinkedinIn size={20} /></a>
-          <a href="#" className="hover:text-yellow-300 transition duration-300"><FaInstagram size={20} /></a>
+        {/* Navigation */}
+        <div className="flex flex-col gap-2">
+          <h3 className="font-semibold">Quick Links</h3>
+          <div className="flex flex-col gap-1 text-gray-600">
+            <a href="/courses" className="hover:text-gray-900 transition-colors">Courses</a>
+            <a href="/about" className="hover:text-gray-900 transition-colors">About Us</a>
+            <a href="/contact" className="hover:text-gray-900 transition-colors">Contact</a>
+            <a href="/faq" className="hover:text-gray-900 transition-colors">FAQ</a>
+          </div>
+        </div>
+
+        {/* Social Media */}
+        <div className="flex flex-col gap-2">
+          <h3 className="font-semibold">Follow Us</h3>
+          <div className="flex gap-3 text-gray-600">
+            <a href="#" className="hover:text-gray-900 transition-colors"><FaFacebookF /></a>
+            <a href="#" className="hover:text-gray-900 transition-colors"><FaTwitter /></a>
+            <a href="#" className="hover:text-gray-900 transition-colors"><FaLinkedinIn /></a>
+            <a href="#" className="hover:text-gray-900 transition-colors"><FaInstagram /></a>
+          </div>
         </div>
       </div>
 
-      <div className="mt-8 text-center text-sm text-white/70">
+      {/* Copyright */}
+      <div className="mt-8 text-center text-gray-500 text-sm">
         © {new Date().getFullYear()} Learnify. All rights reserved.
       </div>
     </footer>

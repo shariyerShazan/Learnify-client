@@ -8,7 +8,7 @@ const MainLayout = () => {
   return (
     <div>
       <Navbar />
-        <div className='w-[90%] mx-auto'>
+        <div className='w-[90%] mx-auto min-h-[70vh]'>
             <Outlet />
         </div>
         <Footer />

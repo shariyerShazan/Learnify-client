@@ -54,7 +54,7 @@ const ErrorPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
       >
-        <Button onClick={() => navigate('/')} className="bg-white text-red-500 hover:bg-white/90 hover:text-red-600">
+        <Button onClick={() => navigate('/')} className="bg-white cursor-pointer text-red-500 hover:bg-white/90 hover:text-red-600">
           Go Back Home
         </Button>
       </motion.div>

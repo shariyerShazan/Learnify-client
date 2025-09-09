@@ -1,67 +1,52 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const About = () => {
   return (
-    <section className="relative bg-gradient-to-r min-h-screen from-indigo-600 via-purple-600 to-pink-500 text-white py-24 px-6 overflow-hidden">
-      {/* Animated background circles */}
+    <section className="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12">
+      
+      {/* Image / Illustration */}
       <motion.div 
-        className="absolute w-72 h-72 bg-purple-400 rounded-full opacity-30 top-[-100px] left-[-100px] animate-pulse"
-        animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-        transition={{ duration: 15, repeat: Infinity }}
-      />
+        className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-lg"
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <img 
+          src="https://www.analyticssteps.com/backend/media/thumbnail/2419395/9525800_1640581900_Top%20Game%20Development%20SoftwaresArtboard%201.jpg" 
+          alt="Learnify Illustration" 
+          className="w-full h-auto object-cover"
+        />
+      </motion.div>
+
+      {/* Text Content */}
       <motion.div 
-        className="absolute w-96 h-96 bg-pink-400 rounded-full opacity-20 bottom-[-150px] right-[-150px] animate-pulse"
-        animate={{ scale: [1, 1.1, 1], rotate: [0, 180, 360] }}
-        transition={{ duration: 20, repeat: Infinity }}
-      />
+        className="w-full md:w-1/2 flex flex-col gap-6"
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
+        <h2 className="text-4xl font-bold text-gray-900">Welcome to Learnify</h2>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Learnify is your friendly online learning platform where students and instructors connect effortlessly. 
+          Discover interactive courses, watch engaging lectures, and level up your skills from the comfort of your home.
+        </p>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Our mission is to make learning fun, flexible, and accessible to everyone. Whether you're a beginner or a pro, 
+          Learnify helps you grow at your own pace.
+        </p>
 
-      <div className="relative max-w-7xl mx-auto text-center">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-extrabold mb-6"
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+        <motion.button 
+          className="w-max px-6 py-3 bg-gray-100 text-gray-900 rounded-xl font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          About Learnify
-        </motion.h2>
+          Explore Courses
+        </motion.button>
+      </motion.div>
 
-        <motion.p
-          className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1.2 }}
-        >
-          Learnify is a cutting-edge Learning Management System (LMS) designed to
-          empower students and instructors worldwide. With interactive courses,
-          engaging video lessons, and personalized learning paths, Learnify
-          brings the classroom to your fingertips.
-        </motion.p>
-
-        <motion.div
-          className="flex flex-wrap justify-center gap-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 1.2 }}
-        >
-          <div className="bg-white text-purple-700 rounded-xl p-6 shadow-lg hover:scale-105 transform transition duration-300">
-            <h3 className="font-bold text-xl mb-2">Interactive Courses</h3>
-            <p>Engage with quizzes, assignments, and interactive content.</p>
-          </div>
-
-          <div className="bg-white text-pink-600 rounded-xl p-6 shadow-lg hover:scale-105 transform transition duration-300">
-            <h3 className="font-bold text-xl mb-2">Video Lessons</h3>
-            <p>High-quality videos for step-by-step learning.</p>
-          </div>
-
-          <div className="bg-white text-indigo-600 rounded-xl p-6 shadow-lg hover:scale-105 transform transition duration-300">
-            <h3 className="font-bold text-xl mb-2">Personalized Paths</h3>
-            <p>Courses tailored to your learning pace and goals.</p>
-          </div>
-        </motion.div>
-      </div>
     </section>
-  )
-}
+  );
+};
 
-export default About
+export default About;
