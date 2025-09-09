@@ -6,10 +6,10 @@ import { Card } from '../ui/card'
 import { useNavigate } from 'react-router'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
-const CourseCard = ({ loading, course }) => {
+const CourseCard = ({ loading, course , myCourse }) => {
   const navigate = useNavigate()
   return (
-    <Card key={course._id} onClick={()=>navigate(`/course-details/${course._id}`)} className="w-72 pt-0 pb-1 hover:scale-101 cursor-pointer hover:shadow-xl">
+    <Card key={course._id} onClick={()=>navigate(`${myCourse ? `/my-course/${course._id}` : `/course-details/${course._id}`}  `)} className="w-72 pt-0 pb-1 hover:scale-101 cursor-pointer hover:shadow-xl">
       {loading ? (
         <CourseSkeleton />
       ) : (
