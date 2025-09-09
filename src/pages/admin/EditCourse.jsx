@@ -46,7 +46,6 @@ const EditCourse = () => {
 
   useEffect(() => {
     if(singleCourse){
-   
         setInput({
             courseTitle: singleCourse.courseTitle || "",
             subtitle: singleCourse.subtitle || "",
@@ -123,11 +122,12 @@ const EditCourse = () => {
      try {
          const res = await axios.patch(`${COURSE_API_END_POINT}/published/${courseId}` , {} , {withCredentials: true}) 
          if(res.data.success){
-            toast(res.data.message)
+            toast.success(res.data.message)
             refetchSingleCourse()
          }
      } catch (error) {
         console.log(error)
+         toast.error(error.response.data.message)
      }
   }
 
@@ -170,7 +170,7 @@ const EditCourse = () => {
     <div className="space-y-6">
       <div className='flex justify-between my-4'>
         <h4 className='text-2xl font-bold'>Add details information regarding course</h4>
-        <Button className={"cursor-pointer"}>
+        <Button onClick={()=>    navigate(`lectures`)} className={"cursor-pointer"}>
           Go to Lectures page
         </Button>
       </div>
@@ -199,7 +199,7 @@ const EditCourse = () => {
 
         <CardContent className="flex flex-col gap-4">
           <div>
-            <Label>Course Title:</Label>
+            <Label className="font-semibold">Course Title:</Label>
             <Input
               type="text"
               name="courseTitle"
@@ -210,7 +210,7 @@ const EditCourse = () => {
           </div>
 
           <div>
-            <Label>Subtitle:</Label>
+            <Label className="font-semibold">Subtitle:</Label>
             <Input
               type="text"
               name="subtitle"
@@ -221,13 +221,13 @@ const EditCourse = () => {
           </div>
 
           <div>
-            <Label>Description:</Label>
+            <Label className="font-semibold">Description:</Label>
             <TextEditor input={input} setInput={setInput} />
           </div>
 
           <div className="flex gap-6">
             <div>
-              <Label>Category:</Label>
+              <Label className="font-semibold">Category:</Label>
               <Select value={input.category} onValueChange={handleSelectChange("category")}>
                 <SelectTrigger className="cursor-pointer w-60">
                   <SelectValue placeholder="Select category" />
@@ -254,7 +254,7 @@ const EditCourse = () => {
             </div>
 
             <div>
-              <Label>Course Level:</Label>
+              <Label className="font-semibold">Course Level:</Label>
               <Select value={input.courseLevel} onValueChange={handleSelectChange("courseLevel")}>
                 <SelectTrigger className="cursor-pointer w-60">
                   <SelectValue placeholder="Select level" />
@@ -268,7 +268,7 @@ const EditCourse = () => {
             </div>
 
             <div>
-              <Label>Price (USD):</Label>
+              <Label className="font-semibold">Price (USD):</Label>
               <Input
                 type="number"
                 name="coursePrice"
@@ -282,7 +282,7 @@ const EditCourse = () => {
           </div>
 
           <div>
-            <Label>Course Thumbnail:</Label>
+            <Label className="font-semibold">Course Thumbnail:</Label>
             <div
               onClick={handleAvatarClick}
               className="relative w-96 h-42 mt-1 rounded-md cursor-pointer border flex items-center justify-center overflow-hidden bg-gray-100 group"
