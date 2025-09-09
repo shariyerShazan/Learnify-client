@@ -49,7 +49,7 @@ const {singleCourse} = useSelector((state)=> state.course)
     <div>
       <Card>
         <CardHeader>
-          <h3 className='text-xl font-bold'>Let's add lectures, and lecture details...</h3>
+          <h3 className='text-xl font-bold'>Let's add lectures...</h3>
         </CardHeader>
         <CardContent>
           <div>
