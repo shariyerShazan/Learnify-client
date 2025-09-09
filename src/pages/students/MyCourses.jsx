@@ -1,8 +1,17 @@
 import CourseCard from '@/components/shared/CourseCard'
+import { useGetPurchasedCourse } from '@/hooks/useGetPurchasedCourse'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const MyCourses = () => {
 
+  const {refetchPurchasedCourse} = useGetPurchasedCourse()
+  useEffect(()=>{
+    refetchPurchasedCourse()
+  }, [])
+
+  const {purchasedCourse} = useSelector((state)=>state.course)
+  
    const [loading, setLoading] = useState(true)
   
     useEffect(() => {
@@ -19,8 +28,8 @@ const MyCourses = () => {
          <h2 className='font-bold text-xl mt-6'>MY COURSES</h2>
          <div className='flex flex-wrap gap-4 mt-6'>
          {
-        (loading ? Array(2).fill(0) : [0,1]).map((_, index) => (
-          <CourseCard  loading={loading} index={index}/>
+        (loading ? Array(2).fill(0) : purchasedCourse).map((course) => (
+          <CourseCard course={course}  loading={loading}/>
         ))
       }
          </div>

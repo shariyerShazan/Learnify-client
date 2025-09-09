@@ -8,7 +8,8 @@ const courseSlice = createSlice({
             adminCourses : [] ,
             singleCourse : null,
             singleLecture : null ,
-            publishedCourses : []
+            publishedCourses : [] ,
+            purchasedCourse : []
         } ,
       
         reducers: {
@@ -23,10 +24,13 @@ const courseSlice = createSlice({
             },
             setPublishedCourses : (state , action)=>{
                 state.publishedCourses = action.payload
+            } ,
+            setPurchasedCourse : (state , action)=>{
+                state.purchasedCourse = action.payload
             }
         }
         
 })
 
-export const { setAdminCourses , setSingleCourse  , setSingleLecture , setPublishedCourses} = courseSlice.actions;
+export const { setAdminCourses , setSingleCourse  , setSingleLecture , setPublishedCourses , setPurchasedCourse} = courseSlice.actions;
 export default courseSlice.reducer;
