@@ -10,7 +10,7 @@ const CourseCard = ({ loading, course , myCourse }) => {
   const navigate = useNavigate()
   console.log(course)
   return (
-    <Card key={course._id} onClick={()=>navigate(`${myCourse ? `/my-course/${course._id}` : `/course-details/${course._id}`}  `)} className="w-72 pt-0 pb-1 hover:scale-101 cursor-pointer hover:shadow-xl">
+    <Card key={course._id} onClick={()=>navigate(`${myCourse ? `/my-courses/${course._id}` : `/course-details/${course._id}`}  `)} className="w-72 pt-0 pb-1 hover:scale-101 cursor-pointer hover:shadow-xl">
       {loading ? (
         <CourseSkeleton />
       ) : (
