@@ -16,7 +16,7 @@ export default function HeroSection() {
         <p className="text-gray-700 mb-6">
           Join thousands of learners and top instructors online. Upgrade your skills today!
         </p>
-        <Button className="bg-blue-600 text-white hover:bg-blue-700">
+        <Button className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">
           Get Started
         </Button>
       </motion.div>
@@ -27,7 +27,7 @@ export default function HeroSection() {
         transition={{ duration: 0.8 }}
         className="lg:w-1/2 mt-10 lg:mt-0 flex justify-center"
       >
-        <img src="/hero-image.png" alt="Learnify Hero" className="w-full max-w-md" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt5QKADNcpgV0vof8b3jSYD94vNgBlZYS11w&s" alt="Learnify Hero" className="w-full max-w-md" />
       </motion.div>
     </div>
   );

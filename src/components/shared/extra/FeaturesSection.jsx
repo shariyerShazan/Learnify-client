@@ -10,8 +10,8 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <div className="w-full py-20 px-6">
-      <h2 className="text-3xl font-bold text-center mb-12">Why Learnify?</h2>
+    <div className="w-full py-10 px-6">
+      <h2 className="text-3xl font-bold text-center mb-6">Why Learnify?</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {features.map((feature, i) => (
           <motion.div
