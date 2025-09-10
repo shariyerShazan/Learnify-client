@@ -88,12 +88,14 @@ const Navbar = () => {
                 user && <><DropdownMenuItem onClick={()=>navigate("/profile")} className={"cursor-pointer"}> 
                 <User className="mr-2 h-4 w-4" /> My Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
-                <BookOpen  className="mr-2 h-4 w-4" /> My Courses
-              </DropdownMenuItem>
+                   {
+                    user && user.role === 'student' &&  <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
+                    <BookOpen  className="mr-2 h-4 w-4" /> My Courses
+                  </DropdownMenuItem>
+                   }
               </> 
                }
-               
+
                {/* instructor routes */}
              { user && user.role === "instructor" && 
                <DropdownMenuItem onClick={()=>navigate("/dashboard/preview")} className={"cursor-pointer"}>

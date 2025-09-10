@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users, Book, DollarSign, CheckCircle } from "lucide-react";
+import DaHomeSkeleton from "@/components/skeletons/DaHomeSkeleton";
 
 const DaHome = () => {
+  const [loading , setLoading] = useState(true)
+ 
+  useEffect(()=>{
+     setTimeout(() => {
+      setLoading(false)
+     }, 1000);
+  }, [])
   // Fake data
   const totalCourses = 12;
   const totalUsers = 120;
@@ -36,6 +44,10 @@ const DaHome = () => {
       icon: <DollarSign className="w-6 h-6 text-yellow-500" />,
     },
   ];
+
+  if(loading){
+    return <DaHomeSkeleton />
+  }
 
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
