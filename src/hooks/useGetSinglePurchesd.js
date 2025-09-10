@@ -26,8 +26,8 @@ const useGetSinglePurchesd = (courseId) => {
     } catch (error) {
       console.log(error)
       dispatch(setSinglePurchased(null)) 
-      setError(error.message || "Something went wrong")
-      toast("You haven't purchased this course")
+      setError(error.response.data.message || "Something went wrong")
+    //   toast.error("You haven't purchased this course")
     } finally {
       setLoading(false)
     }

@@ -1,4 +1,3 @@
-// components/CourseProgress.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -7,10 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { PlayCircle, Lock, ChevronRight } from "lucide-react";
 import useGetSinglePurchesd from "@/hooks/useGetSinglePurchesd";
+import CourseProgressSkeleton from "@/components/skeletons/CourseProgressSkeleton";
+
 
 const CourseProgress = () => {
   const { courseId } = useParams();
-  const { refetchSinglePurchased } = useGetSinglePurchesd(courseId);
+  const { refetchSinglePurchased, loading, error } = useGetSinglePurchesd(courseId);
   const { singlePurchased } = useSelector((state) => state.course);
 
   const [currentLecture, setCurrentLecture] = useState(null);
@@ -52,7 +53,17 @@ const CourseProgress = () => {
     }
   };
 
-  if (!singlePurchased) return <p className="text-center mt-10">No course found</p>;
+  if (loading) return <CourseProgressSkeleton />;
+  if (error) return (
+    <div className="text-center mt-10 text-red-500 font-medium">
+      {error}
+    </div>
+  );
+  if (!singlePurchased) return (
+    <p className="text-center mt-10">
+      No course found
+    </p>
+  );
 
   return (
     <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
