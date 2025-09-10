@@ -4,7 +4,7 @@ import { Navigate } from "react-router";
 import { toast } from "react-toastify";
 
 const UserProtectedRoute = ({ children }) => {
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!user) {

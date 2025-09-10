@@ -15,6 +15,8 @@ import DaLectures from "@/pages/admin/lecture/DaLectures";
 import EditLecture from "@/pages/admin/lecture/EditLecture";
 import CourseDetails from "@/pages/CourseDetails";
 import CourseProgress from "@/pages/students/CourseProgress";
+import InstructorProtectedRoute from "./InstructorProtectedRoute";
+import UserProtectedRoute from "./UserProtectedRoute";
 
 export const Router = createBrowserRouter([
     {
@@ -27,17 +29,29 @@ export const Router = createBrowserRouter([
                 element: <Home />
             } ,
             {
+                path : "/login" ,
+                element: <Login />
+            },
+            {
                  path: "about" ,
                  element: <About />
             },
             {
                 path: "my-courses" ,
-                element: <MyCourses/>
+                element:
+                <UserProtectedRoute >
+                       <MyCourses/>
+                </UserProtectedRoute>
+           
             }
             ,
             {
                 path: "profile" ,
-                element: <Profile/>
+                element:
+                <UserProtectedRoute >
+              <Profile/>
+         </UserProtectedRoute>
+     
             } ,
             {
                 path: "course-details/:courseId" ,
@@ -45,11 +59,17 @@ export const Router = createBrowserRouter([
             },
             {
                 path: "my-courses/:courseId" ,
-                element : <CourseProgress />
+                element :
+                <UserProtectedRoute >
+                <CourseProgress />
+           </UserProtectedRoute>
+                 
             },
             {
                 path: "Dashboard" ,
-                element: <Dashboard /> ,
+                element: <InstructorProtectedRoute >
+                         <Dashboard />            
+                </InstructorProtectedRoute> ,
                 children: [
                     {
                         path: "preview" ,
@@ -75,8 +95,5 @@ export const Router = createBrowserRouter([
             }
         ] ,
     } ,
-    {
-        path : "/login" ,
-        element: <Login />
-    }
+    
 ])

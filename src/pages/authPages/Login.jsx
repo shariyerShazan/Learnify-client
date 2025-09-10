@@ -71,6 +71,13 @@ const Login = () => {
         }
        }
     }
+    const fillInstructorCredential = () => {
+      setLoginInput({
+        email: "shazan@gmail.com",
+        password: "shazan1"
+      });
+    };
+    
   return (
     <div className='flex justify-center items-center mt-22'>
             <Tabs value={defaltLogin}  onValueChange={(val) => setDefaultLogin(val)}  className={"w-[400px]"}>
@@ -88,10 +95,10 @@ const Login = () => {
                             <CardTitle>Login to Learnify</CardTitle>
                             <CardDescription>Login you password here...</CardDescription>
                             <CardAction>
-                                       <Button className={"cursor-pointer"} onClick={()=> navigate('/')}>
-                                         Home
-                                        </Button>
-                            </CardAction>
+                                  <Button className={"cursor-pointer"} onClick={fillInstructorCredential}>
+                                    instructor Login
+                                  </Button>
+                                </CardAction>
                         </CardHeader>
                         <CardContent className={"flex flex-col gap-3"}>
                                    <div className='flex flex-col gap-2'>

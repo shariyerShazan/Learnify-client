@@ -83,16 +83,25 @@ const Navbar = () => {
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>{user?.fullName}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={()=>navigate("/profile")} className={"cursor-pointer"}> 
+              {/* user routes */}
+               {
+                user && <><DropdownMenuItem onClick={()=>navigate("/profile")} className={"cursor-pointer"}> 
                 <User className="mr-2 h-4 w-4" /> My Profile
               </DropdownMenuItem>
               <DropdownMenuItem onClick={()=>navigate("/my-courses")} className={"cursor-pointer"}>
                 <BookOpen  className="mr-2 h-4 w-4" /> My Courses
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>navigate("/dashboard/preview")} className={"cursor-pointer"}>
-                <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              </> 
+               }
+               
+               {/* instructor routes */}
+             { user && user.role === "instructor" && 
+               <DropdownMenuItem onClick={()=>navigate("/dashboard/preview")} className={"cursor-pointer"}>
+               <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+             </DropdownMenuItem>
+             }
+                          <DropdownMenuSeparator />
+            
               <DropdownMenuItem
                 onClick={handleLogout}
                 className="text-red-500 font-semibold cursor-pointer"
