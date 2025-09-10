@@ -1,30 +1,31 @@
+// components/CourseProgress.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useGetSingleCourse } from "@/hooks/useGetSingleCourse";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { PlayCircle, Lock, ChevronRight } from "lucide-react";
+import useGetSinglePurchesd from "@/hooks/useGetSinglePurchesd";
 
 const CourseProgress = () => {
   const { courseId } = useParams();
-  const { refetchSingleCourse, loading, error } = useGetSingleCourse(courseId);
-  const { singleCourse } = useSelector((state) => state.course);
+  const { refetchSinglePurchased } = useGetSinglePurchesd(courseId);
+  const { singlePurchased } = useSelector((state) => state.course);
 
   const [currentLecture, setCurrentLecture] = useState(null);
-  const [unlockedLectures, setUnlockedLectures] = useState([]); // unlocked lectures ids
+  const [unlockedLectures, setUnlockedLectures] = useState([]);
 
   useEffect(() => {
-    refetchSingleCourse();
-  }, [refetchSingleCourse]);
+    refetchSinglePurchased();
+  }, [refetchSinglePurchased]);
 
   useEffect(() => {
-    if (singleCourse?.lectures?.length > 0) {
-      setCurrentLecture(singleCourse.lectures[0]);
-      setUnlockedLectures([singleCourse.lectures[0]._id]); // lecture unlock
+    if (singlePurchased?.lectures?.length > 0) {
+      setCurrentLecture(singlePurchased.lectures[0]);
+      setUnlockedLectures([singlePurchased.lectures[0]._id]);
     }
-  }, [singleCourse]);
+  }, [singlePurchased]);
 
   const handleLectureClick = (lecture) => {
     if (!unlockedLectures.includes(lecture._id)) return;
@@ -32,30 +33,26 @@ const CourseProgress = () => {
   };
 
   const handleVideoEnded = () => {
-    const currentIndex = singleCourse.lectures.findIndex(
+    const currentIndex = singlePurchased.lectures.findIndex(
       (lec) => lec._id === currentLecture._id
     );
-    const nextLecture = singleCourse.lectures[currentIndex + 1];
+    const nextLecture = singlePurchased.lectures[currentIndex + 1];
     if (nextLecture) {
-      setUnlockedLectures((prev) => [...prev, nextLecture._id]); // next lecture unlock
+      setUnlockedLectures((prev) => [...prev, nextLecture._id]);
     }
   };
 
   const handleNextLecture = () => {
-    const currentIndex = singleCourse.lectures.findIndex(
+    const currentIndex = singlePurchased.lectures.findIndex(
       (lec) => lec._id === currentLecture._id
     );
-    const nextLecture = singleCourse.lectures[currentIndex + 1];
+    const nextLecture = singlePurchased.lectures[currentIndex + 1];
     if (nextLecture && unlockedLectures.includes(nextLecture._id)) {
       setCurrentLecture(nextLecture);
     }
   };
-  
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
-  if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
-  if (!singleCourse) return <p className="text-center mt-10">No course found</p>;
-
+  if (!singlePurchased) return <p className="text-center mt-10">No course found</p>;
 
   return (
     <div className="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -73,36 +70,35 @@ const CourseProgress = () => {
                 src={currentLecture.videoUrl}
                 controls
                 autoPlay
-                muted  
+                muted
                 className="w-full h-[450px] rounded-lg border"
                 onEnded={handleVideoEnded}
               />
-              {/* Next Button */}
               <div className="flex justify-end mt-4">
                 <button
                   onClick={handleNextLecture}
                   disabled={
-                    singleCourse.lectures.findIndex(
+                    singlePurchased.lectures.findIndex(
                       (lec) => lec._id === currentLecture._id
-                    ) === singleCourse.lectures.length - 1 ||
+                    ) === singlePurchased.lectures.length - 1 ||
                     !unlockedLectures.includes(
-                      singleCourse.lectures[
-                        singleCourse.lectures.findIndex(
+                      singlePurchased.lectures[
+                        singlePurchased.lectures.findIndex(
                           (lec) => lec._id === currentLecture._id
                         ) + 1
-                      ]._id
+                      ]?._id
                     )
                   }
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition cursor-pointer ${
-                    singleCourse.lectures.findIndex(
+                    singlePurchased.lectures.findIndex(
                       (lec) => lec._id === currentLecture._id
-                    ) === singleCourse.lectures.length - 1 ||
+                    ) === singlePurchased.lectures.length - 1 ||
                     !unlockedLectures.includes(
-                      singleCourse.lectures[
-                        singleCourse.lectures.findIndex(
+                      singlePurchased.lectures[
+                        singlePurchased.lectures.findIndex(
                           (lec) => lec._id === currentLecture._id
                         ) + 1
-                      ]._id
+                      ]?._id
                     )
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-blue-600 text-white hover:bg-blue-700"
@@ -124,12 +120,12 @@ const CourseProgress = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-xl font-bold">
-            Lectures ({singleCourse.lectures.length})
+            Lectures ({singlePurchased.lectures.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[450px] pr-2">
-            {singleCourse.lectures.map((lecture, index) => {
+            {singlePurchased.lectures.map((lecture, index) => {
               const isUnlocked = unlockedLectures.includes(lecture._id);
               return (
                 <div key={lecture._id}>
