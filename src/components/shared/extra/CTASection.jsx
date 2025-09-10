@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 
 export default function CTASection() {
+    const navigate = useNavigate()
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -11,7 +13,7 @@ export default function CTASection() {
     >
       <h2 className="text-3xl font-bold mb-4">Ready to Start Learning?</h2>
       <p className="text-gray-700 mb-6">Sign up and join thousands of learners today!</p>
-      <Button className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">Join Learnify</Button>
+      <Button onClick={()=>{navigate("/login")}} className="bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">Join Learnify</Button>
     </motion.div>
   );
 }

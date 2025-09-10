@@ -88,7 +88,7 @@ const {singleCourse} = useSelector((state)=> state.course)
             </TableHeader>
             <TableBody>
               {loading ? (
-                <LectureTableSkeleton rows={3} />
+                <LectureTableSkeleton rows={10} />
               ) : singleCourse?.lectures.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center text-gray-500">

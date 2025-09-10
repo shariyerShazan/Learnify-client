@@ -15,7 +15,7 @@ const CourseTableSkeleton = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {[...Array(3)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <TableRow key={i}>
             <TableCell className="pl-4">
               <Skeleton className="h-4 w-40" />

@@ -1,7 +1,7 @@
 import { TableRow, TableCell } from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
 
-const LectureTableSkeleton = ({ rows = 3 }) => {
+const LectureTableSkeleton = ({ rows = 10 }) => {
   return (
     <>
       {Array.from({ length: rows }).map((_, i) => (
