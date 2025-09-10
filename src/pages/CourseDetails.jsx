@@ -101,6 +101,7 @@ const CourseDetails = () => {
                             <video
                                 src={singleCourse.lectures[0]?.videoUrl}
                                 controls
+                                muted
                                 className="w-full h-auto rounded-xl"
                             />
                         </div>

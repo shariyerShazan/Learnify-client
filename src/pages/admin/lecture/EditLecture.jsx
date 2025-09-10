@@ -179,6 +179,7 @@ const EditLecture = () => {
                             <video
                                 src={singleLecture.videoUrl}
                                 controls
+                                muted
                                 className="w-full max-w-md rounded border"
                             >
                                 Your browser does not support the video tag.
