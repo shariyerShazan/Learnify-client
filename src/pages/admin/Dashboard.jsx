@@ -1,5 +1,5 @@
 import DaSidebar from "@/components/shared/admin/DaSidebar";
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet,
     //  useNavigate 
     } from "react-router";
@@ -7,6 +7,12 @@ import { Outlet,
 
 
 const Dashboard = () => {
+
+  useEffect(()=>{
+    document.title = `Dashboard | Learnify`
+  },[])
+
+
 // const navigate = useNavigate()
 // useEffect(()=>{
 //     navigate("/dashboard/preview")

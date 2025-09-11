@@ -11,6 +11,11 @@ import { useParams } from 'react-router'
 import { toast } from 'react-toastify'
 
 const CourseDetails = () => {
+
+      useEffect(()=>{
+        document.title = `Course details | Learnify`
+      },[])
+    
     const { courseId } = useParams()
     const { refetchSingleCourse } = useGetSingleCourse(courseId)
 
@@ -19,6 +24,8 @@ const CourseDetails = () => {
     }, [courseId])
 
     const { singleCourse } = useSelector((state) => state.course)
+
+// console.log(singleCourse)
 
     if (!singleCourse) return <p className="text-center mt-10 animate-pulse">Loading...</p>
 

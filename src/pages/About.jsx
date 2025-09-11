@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const About = () => {
+
+  useEffect(()=>{
+    document.title = `About | Learnify`
+  },[])
+
   return (
+
     <section className="max-w-7xl mx-auto px-6 py-16 flex flex-col md:flex-row items-center gap-12">
       
       {/* Image / Illustration */}

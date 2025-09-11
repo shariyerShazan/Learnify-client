@@ -5,6 +5,11 @@ import { useSelector } from 'react-redux'
 
 const MyCourses = () => {
 
+  useEffect(()=>{
+    document.title = `My courses | Learnify`
+  },[])
+
+
   const {refetchPurchasedCourse} = useGetPurchasedCourse()
   useEffect(()=>{
     refetchPurchasedCourse()

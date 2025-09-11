@@ -13,6 +13,11 @@ import { toast } from 'react-toastify'
 import { useGetUser } from '@/hooks/useGetUser'
 
 const Profile = () => {
+
+  useEffect(()=>{
+    document.title = `Profile | Learnify`
+  },[])
+
   const { user } = useSelector((state) => state.user)
   const imageRef = useRef()
   const [loading, setLoading] = useState(true)

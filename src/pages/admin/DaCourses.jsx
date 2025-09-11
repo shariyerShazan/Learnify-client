@@ -50,7 +50,7 @@ setTimeout(() => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adminCourses.length > 0 ? (
+              {adminCourses?.length > 0 ? (
                 adminCourses.map((course , index) => (
                   <TableRow key={index}>
                     <TableCell className="pl-4">{course?.courseTitle}</TableCell>
@@ -59,7 +59,7 @@ setTimeout(() => {
                     <TableCell>
                       <Badge
                         className={`px-2 py-1 rounded text-white text-sm ${
-                          course.isPublished ? "bg-green-500" : "bg-gray-500 px-4"
+                          course?.isPublished ? "bg-green-500" : "bg-gray-500 px-4"
                         }`}
                       >
                         {course?.isPublished ? "Published" : "Draft"}

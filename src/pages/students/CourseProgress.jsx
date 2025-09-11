@@ -10,6 +10,11 @@ import CourseProgressSkeleton from "@/components/skeletons/CourseProgressSkeleto
 
 
 const CourseProgress = () => {
+
+  useEffect(()=>{
+    document.title = `Course progress | Learnify`
+  },[])
+
   const { courseId } = useParams();
   const { refetchSinglePurchased, loading, error } = useGetSinglePurchesd(courseId);
   const { singlePurchased } = useSelector((state) => state.course);

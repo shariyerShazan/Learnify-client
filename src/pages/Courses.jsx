@@ -6,6 +6,11 @@ import { useSelector } from 'react-redux'
 
 
 const Courses = () => {
+
+    useEffect(()=>{
+      document.title = `Course | Learnify`
+    },[])
+  
   const [loading, setLoading] = useState(true)
  
 const {refetchPublishedCourses} = useGetPublishedCourse()

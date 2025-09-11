@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
     Card,
@@ -22,6 +22,11 @@ import { useDispatch } from 'react-redux'
 
 
 const Login = () => {
+
+  useEffect(()=>{
+    document.title = `Login | Learnify`
+  },[])
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
     const [defaltLogin , setDefaultLogin] = useState("Login")
