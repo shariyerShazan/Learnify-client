@@ -15,6 +15,11 @@ import EditLectureSkeleton from '@/components/skeletons/EditLectureSkeleton';
 import Swal from "sweetalert2";
 
 const EditLecture = () => {
+
+  useEffect(()=>{
+    document.title = `Edit lecture | Learnify`
+  },[])
+
   const { courseId, lectureId } = useParams();
   const navigate = useNavigate();
   const { refetchSingleLecture } = useGetSingleLecture(lectureId);

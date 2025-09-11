@@ -10,6 +10,11 @@ import CourseTableSkeleton from "@/components/skeletons/CourseTableSkeleton";
 import { useNavigate } from "react-router";
 
 const DaCourses = () => {
+
+  useEffect(()=>{
+    document.title = `Dashboard courses | Learnify`
+  },[])
+
     const navigate = useNavigate()
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(true);

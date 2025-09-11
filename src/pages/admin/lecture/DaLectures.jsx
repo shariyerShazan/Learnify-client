@@ -13,6 +13,12 @@ import { toast } from 'react-toastify'
 import { useGetSingleCourse } from '@/hooks/useGetSingleCourse'
 
 const DaLectures = () => {
+
+  useEffect(()=>{
+    document.title = `Dashboard Lectures | Learnify`
+  },[])
+
+
   const { courseId } = useParams()
   const navigate = useNavigate()
 
